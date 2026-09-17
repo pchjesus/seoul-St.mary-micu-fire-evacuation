@@ -164,3 +164,45 @@ button{color:inherit}
 .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,12px);opacity:0;pointer-events:none;z-index:100;padding:9px 13px;border-radius:10px;background:#24313b;color:#fff;font-size:12px;font-weight:700;box-shadow:0 8px 24px rgba(20,30,40,.18);transition:opacity .16s ease,transform .16s ease}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 @media print{.print-meta{display:block!important}.modified-badge{background:transparent;padding:0;border:0;color:#333}}
+
+/* v0.6.17 FINAL help modal usability fix */
+.help-card {
+  width: min(920px, calc(100vw - 32px));
+  max-width: 920px;
+  max-height: min(88vh, 900px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+.help-card .settings-head {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: inherit;
+}
+.help-card .help-section {
+  margin-bottom: 18px;
+}
+.help-card .settings-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  background: inherit;
+  padding-top: 12px;
+}
+@media (max-width: 700px) {
+  .help-card {
+    width: calc(100vw - 20px);
+    max-width: none;
+    max-height: 92vh;
+    padding: 18px !important;
+  }
+  .help-card .settings-head {
+    margin-bottom: 10px;
+  }
+  .help-card .help-section {
+    margin-bottom: 16px;
+  }
+}
