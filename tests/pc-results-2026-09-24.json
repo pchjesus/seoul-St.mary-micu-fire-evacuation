@@ -1,0 +1,276 @@
+{
+  "date": "2026-09-24",
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "width": 1440,
+    "height": 900
+  },
+  "results": [
+    {
+      "name": "초기 화면/저장소",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "샘플 수정 저장",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "새로고침 복원",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "미저장 이동 취소",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "미저장 이동 승인/초안 폐기",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "잘못된 월에 성공 표시 금지",
+      "pass": false,
+      "detail": ""
+    },
+    {
+      "name": "Excel 저장과 적용 분리",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Excel 사용",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "추가 전 입력의 이탈 경고",
+      "pass": false,
+      "detail": ""
+    },
+    {
+      "name": "적용 전 입력 저장 차단",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "세 직종 추가/동명이인 ID/원본 보존",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "저장 오류/초안 유지/성공 금지",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "실패 후 재저장",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "새 탭 복원",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "동시 편집 충돌/덮어쓰기 방지",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "충돌 후 새로고침",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "같은 월 교체와 관련 수정 초기화",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "다른 탭 교체 후 새로고침으로 신규 원본 수정 복원",
+      "pass": false,
+      "detail": ""
+    },
+    {
+      "name": "근무표 전환 실패 시 활성 근무표 보존",
+      "pass": false,
+      "detail": ""
+    },
+    {
+      "name": "잘못된 월에 성공 표시 금지 [재검사]",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "월 수동 지정 정상 저장",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "추가 전 입력의 이탈 경고 [재검사]",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "근무표 전환 실패 시 활성 근무표 보존 [재검사]",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "다른 탭 교체 후 새로고침으로 신규 원본 수정 복원 [재검사]",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "이름/직종 변경과 ID/원본 유지",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "인원 삭제 취소",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "인원 삭제와 기존 배정 해제",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "제외 인원 복원",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "다른 날짜에도 프로필 적용",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "월말 N → 익월 D/근무표 없음",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "이전 듀티 월 경계",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "형식 오류 파일 거부",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "빈 근무표 파일 거부",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "월 지정 Escape 취소/입력 초기화",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "저장 중 중복 동작과 편집 차단",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "역할 초기화와 저장",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "저장소 초기화 실패 시 편집 차단/재시도 안내",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "저장소 다시 연결",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "설명서 크기/스크롤/고정 버튼",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "설명서 닫기/규칙 Escape 닫기",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "인쇄 버튼 호출",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "구형 XLS 읽기/저장",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "동명이인 Excel과 HTML 문자 안전 표시",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "근무표 삭제 취소",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "활성 근무표 삭제/샘플 복귀/다른 월 유지",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "샘플 수정 독립 보존",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "인원 저장 실패 시 초안/모달 유지",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "인원 저장 재시도",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "추가 인원의 듀티 범위",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "사용자가 추가한 인원 삭제",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "모든 테스트 탭 종료 후 재접속 복원",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "재접속 후 삭제한 근무표/인원 재등장 없음",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "summary": {
+    "uniqueChecks": 48,
+    "passedAfterFixes": 48,
+    "initialFailuresRetested": 4,
+    "note": "확인창은 confirm 반환값을 제어해 수락/취소 분기를 검사함. beforeunload는 취소 가능한 이벤트로 처리 여부를 검사함. 프로세스 종료나 실제 프린터 출력 검사는 아님."
+  }
+}

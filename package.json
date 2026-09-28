@@ -1,0 +1,13 @@
+{
+  "name": "micu-fire-evacuation",
+  "version": "0.7.2",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "check": "node --check storage.js && node --check audit.js && node --check audit-model.js && node --check script.js && node --check personnel.js && node --check history.js",
+    "start": "python3 -m http.server 8071 --bind 127.0.0.1"
+  },
+  "devDependencies": {
+    "fake-indexeddb": "^6.2.4"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "version": "0.7.2",
+  "date": "2026-09-24",
+  "browser": "Aside Chromium 152",
+  "os": "macOS",
+  "origin": "http://127.0.0.1:8074",
+  "passed": 34,
+  "checks": [
+    "empty history and disabled export",
+    "draft changes are not logged",
+    "manual save produces override and assignment with version",
+    "person addition records automatic and final assignment",
+    "profile rename and role recorded with original identity",
+    "action filter and before/after shown",
+    "combined inclusive filters",
+    "download produced a non-empty XLSX",
+    "environment grouping",
+    "invalid date disables filtered export",
+    "history close restores focus",
+    "failure toast, draft retained, failure log only",
+    "history failure does not misreport operational save",
+    "pending history and retry visible",
+    "retry stores all pending rows exactly once",
+    "read failure disables stale export",
+    "reload restores operational data and all history",
+    "tab close and reopen retains history",
+    "provided September roster import and log",
+    "roster use logs explicit automatic assignment",
+    "October saved without replacing active September",
+    "cancelled roster delete produces no logs",
+    "roster deletion keeps earlier history and other month",
+    "replacement records reset and preserves history",
+    "deleting active roster restores saved sample state",
+    "assigned-person removal prompts and original remains intact",
+    "person deletion recorded and assignment removed",
+    "source personnel restoration is recorded",
+    "reset draft produces no history before save",
+    "committed manual reset returns automatic result and records reset",
+    "restored help layout and v072 guidance",
+    "help and date/duty navigation never log",
+    "history escapes HTML-like names",
+    "manual override records actual automatic name before first edit"
+  ],
+  "additional": [
+    "Filtered XLSX decoded: 1 name-change row",
+    "All XLSX decoded: 13 rows",
+    "Printed PDF: 1 Letter-size page, 3 assignment panels, no history controls"
+  ],
+  "limitations": [
+    "Full desktop-browser process exit not performed",
+    "Confirmation answers supplied by a test-only window.confirm stub"
+  ]
+}

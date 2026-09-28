@@ -206,3 +206,85 @@ button{color:inherit}
     margin-bottom: 16px;
   }
 }
+
+/* v0.7.1: use the existing layout and retain the v0.6.17 help rules above. */
+.storage-bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:14px 2px;font-size:12px;color:var(--muted)}
+.storage-bar .error{color:#a12727;font-weight:700}
+button:disabled{opacity:.55;cursor:wait}
+body[aria-busy="true"] main,body[aria-busy="true"] .overlay{pointer-events:none}
+.manage-people-btn,.personnel-card button:not(.icon-btn),.storage-bar button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;cursor:pointer;min-height:44px}
+.manage-people-btn{width:100%;margin-bottom:12px;color:var(--accent);font-weight:700}
+.personnel-card{width:min(720px,calc(100vw - 24px));max-width:720px;max-height:90dvh;overflow:auto;overscroll-behavior:contain}
+.personnel-card .settings-head,.personnel-card .settings-actions{position:sticky;background:#fff;z-index:2}
+.personnel-card .settings-head{top:0;padding-bottom:8px}
+.personnel-card .settings-actions{bottom:0;padding-top:12px}
+.personnel-card .primary{background:var(--accent)!important;color:#fff}
+.personnel-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.personnel-row>div:first-child{min-width:0;overflow-wrap:anywhere}
+.personnel-row small{display:block;color:var(--muted);font-size:12px;margin-top:5px}
+.personnel-row-actions{display:flex;flex-shrink:0;gap:6px}
+.person-form{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-top:20px}
+.person-form label{display:flex;flex-direction:column;gap:6px;font-size:13px}
+.person-form input,.person-form select{min-width:0;width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:16px;min-height:44px}
+.person-form-actions{grid-column:1/-1;display:flex;gap:8px}
+.toast{max-width:calc(100vw - 24px);width:max-content;text-align:center}
+@media(max-width:560px){.person-form{grid-template-columns:1fr 1fr}.person-form label:first-child{grid-column:1/-1}.personnel-card{padding:16px}.calendar{max-width:calc(100vw - 56px)}.editable-name{padding:7px 2px;min-height:44px}.personnel-row-actions button{padding:8px!important}}
+@media print{.storage-bar,.manage-people-btn,.personnel-card{display:none!important}}
+@media(max-width:560px){.top-right{flex-wrap:wrap;gap:12px}.current-clock{text-align:left}.top-actions{gap:8px}}
+/* Keep the help footer inside the visible viewport when mobile browser bars show. */
+@supports(height:100dvh){
+  .help-card{max-height:min(88dvh,900px)}
+  @media(max-width:700px){.help-card{max-height:calc(100dvh - 36px)}}
+}
+
+/* Printing must not retain hidden screen layout or editable controls. */
+@media print{
+  body > :not(.app-shell), .app-shell > :not(main),
+  main > :not(.workspace), .workspace > :not(#printArea){display:none!important}
+  .app-shell,main,.workspace{display:block!important;margin:0;padding:0;max-width:none;width:100%}
+  #printArea{position:static;width:100%;padding:12mm;border-radius:0}
+  #printArea .reset-role-btn,#printArea .edit-actions{display:none!important}
+  #printArea .editable-name{min-width:0;border:0;outline:0}
+  #printArea .assignment{break-inside:avoid}
+}
+/* Mask the scroll-container padding behind the sticky help controls. */
+.help-card .settings-head{box-shadow:0 -20px 0 #fff}
+.help-card .settings-actions{box-shadow:0 20px 0 #fff}
+
+/* v0.7.2: history follows the existing scrollable modal and touch targets. */
+.storage-bar #historyBtn{margin-left:auto;white-space:nowrap}
+.audit-warning{margin:0 0 16px;padding:12px 16px;border:1px solid #d3a34b;border-radius:12px;background:#fff7e6;color:#734b08;font-size:13px;line-height:1.7}
+.audit-warning button{margin-left:12px;min-height:44px}
+.history-open{overflow:hidden}
+.history-card{width:min(960px,96vw);max-width:960px;max-height:90vh;max-height:90dvh;padding:0;display:flex;flex-direction:column;overflow:hidden}
+.history-card>.settings-head{padding:20px 24px 12px;margin:0;flex:none;border-bottom:1px solid var(--line,#dce4ef)}
+.history-card>.history-body{padding:12px 24px 24px;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+.history-card>.history-actions{padding:14px 24px;margin:0;flex:none;border-top:1px solid var(--line,#dce4ef);display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
+.history-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:end}
+.history-filters label{display:flex;flex-direction:column;gap:6px;margin:0;font-size:13px;font-weight:700;min-width:0}
+.history-filters input,.history-filters select{width:100%;min-width:0;min-height:44px;border:1px solid #dce4ef;border-radius:8px;padding:8px;background:white;color:inherit;font:inherit;box-sizing:border-box}
+.history-card button{min-height:44px}
+.history-summary{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:18px 0;font-size:13px}
+.history-group>h3{font-size:15px;margin:20px 0 10px;overflow-wrap:anywhere}
+.history-event{border:1px solid #dce4ef;border-radius:12px;padding:16px;margin:10px 0;overflow-wrap:anywhere}
+.history-event-head{display:flex;align-items:start;justify-content:space-between;gap:12px;font-size:15px}
+.history-result{font-size:12px;color:#166534;white-space:nowrap}.history-result.failed{color:#b42318}
+.history-target{font-weight:700;font-size:14px;margin:8px 0 4px}
+.history-meta,.history-detail{font-size:12px;line-height:1.7;color:#536276}.history-detail{margin:10px 0 0;white-space:pre-wrap}
+.history-changes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0 0}
+.history-changes>div{min-width:0;padding:12px;background:#f5f8fc;border-radius:8px}
+.history-changes dt{font-size:11px;font-weight:700;color:#536276;margin-bottom:6px}
+.history-changes dd{font-size:13px;line-height:1.6;margin:0;white-space:pre-wrap}
+.history-empty{padding:30px 0;line-height:1.8;color:#536276}
+@media(max-width:600px){
+  .history-card{width:96vw;max-height:94vh;max-height:94dvh}
+  .history-card>.settings-head,.history-card>.history-actions{padding:12px 16px}
+  .history-card>.history-body{padding:12px 16px 20px}
+  .history-filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .history-changes{grid-template-columns:1fr;gap:8px}
+  .history-card>.history-actions button{flex:1;font-size:12px;padding:10px 8px}
+  .history-event{padding:12px}.history-event-head{flex-wrap:wrap}
+  .audit-warning button{display:block;margin:8px 0 0}
+}
+.history-card button:not(.icon-btn):not(.primary){border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;cursor:pointer}
+.history-card button:disabled{cursor:not-allowed}

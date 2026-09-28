@@ -1,0 +1,27 @@
+{
+  "version": "0.7.2",
+  "date": "2026-09-24",
+  "device": "Android 16 Medium Phone API 36.1 emulator",
+  "browser": "Chrome",
+  "origin": "http://10.0.2.2:8074",
+  "confirmed": [
+    "Manual touch edit and operational save",
+    "3 events: manual override, assignment change, save success",
+    "Coarse environment and version visible",
+    "Action filter returns 1 of 3 records",
+    "Scrollable modal with fixed header and footer",
+    "Actual filtered XLSX download: one row verified from emulator filesystem",
+    "After repeated Chrome relaunch, previous 3 history records restored",
+    "After process relaunch, saved manual assignment text containing AndroidAudit restored"
+  ],
+  "observations": [
+    "Chrome startup ANR before main checks; relaunch recovered",
+    "Process restart produced repeated native Chrome FocusEvent timeout (5003ms); recovery retried",
+    "Local HTTP XLSX download required Chrome Keep confirmation"
+  ],
+  "not_verified": [
+    "Physical Android phone",
+    "iPhone Safari/Chrome (simulator agent not installed)",
+    "Reliable first-attempt Chrome process restart"
+  ]
+}

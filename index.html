@@ -84,6 +84,8 @@
       </button>
     </section>
 
+    <div class="storage-bar" role="status" aria-live="polite"><span id="storageStatus">저장소를 확인하고 있어.</span><button id="retryStorageBtn" type="button" hidden>저장소 다시 연결</button><button id="historyBtn" type="button">수정 이력</button></div>
+    <div id="auditWarning" class="audit-warning" hidden><span id="auditStatus" role="status"></span><button id="retryAuditBtn" type="button">이력 저장 재시도</button></div>
     <section class="workspace">
       <aside class="staff-panel card">
         <div class="section-head">
@@ -93,6 +95,7 @@
           </div>
           <span class="pill" id="dutyPill">D</span>
         </div>
+        <button id="managePeopleBtn" class="manage-people-btn" type="button">인원 관리 · 추가 / 삭제</button>
         <div id="staffList" class="staff-list"></div>
       </aside>
 
@@ -108,17 +111,52 @@
         <div id="assignmentList" class="assignment-list"></div>
         <div id="editActions" class="edit-actions hidden">
           <span id="editHint">수정 모드: 각 역할의 이름을 클릭해서 직접 바꿀 수 있어.</span>
-          <button id="saveManualBtn" class="primary">수정 완료</button>
+          <button id="saveManualBtn" class="primary">수정사항 저장</button>
         </div>
         <div class="notice">
           <strong>MICU 기본 배치 규칙</strong><br/>
           근무자 중 <b>최선임 → 통보연락반</b>, <b>차선임·3번째 선임 → 소화반</b>,
-          <b>4번째 이하 간호사 → 대피유도반</b>으로 배치해. 현재 근무표에는 간호사만 포함되어 있어.
-          사원·의사 데이터가 실제 근무표에 포함되면 대피유도반에 함께 배치하도록 확장하면 돼.
+          <b>4번째 이하 간호사 → 대피유도반</b>으로 배치해. 인원 관리에서 추가한 사원·의사도 대피유도반에 포함돼.
         </div>
       </section>
     </section>
   </main>
+</div>
+<div id="historyPanel" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="historyTitle">
+  <div class="settings-card history-card">
+    <div class="settings-head"><div><span class="eyebrow">CHANGE HISTORY</span><h2 id="historyTitle">수정 이력</h2></div><button id="closeHistory" class="icon-btn" aria-label="수정 이력 닫기">×</button></div>
+    <div class="history-body">
+      <p id="historyMessage" class="settings-note" role="status"></p>
+      <button id="historyRetry" type="button" hidden>이력 저장 재시도</button>
+      <div class="history-filters">
+        <label>시작일<input id="historyFrom" type="date"></label>
+        <label>종료일<input id="historyTo" type="date"></label>
+        <label>작업<select id="historyAction"><option value="">전체</option></select></label>
+        <label>환경<select id="historyEnvironment"><option value="">전체</option></select></label>
+        <label>묶어서 보기<select id="historyGroup"><option value="date">날짜별 · 최신순</option><option value="environment">환경별 · 최신순</option></select></label>
+        <button id="historyResetFilters" type="button">필터 초기화</button>
+      </div>
+      <div class="history-summary"><strong id="historyCount" role="status"></strong><button id="historyReload" type="button">다시 불러오기</button></div>
+      <div id="historyList"></div><button id="historyMore" class="wide-btn" type="button" hidden>더 보기</button>
+    </div>
+    <div class="settings-actions history-actions"><button id="historyExportFiltered" type="button" class="primary">현재 결과 내려받기</button><button id="historyExportAll" type="button">전체 이력 내려받기</button></div>
+  </div>
+</div>
+<div id="personnelPanel" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="personnelTitle">
+  <div class="settings-card personnel-card">
+    <div class="settings-head"><div><h2 id="personnelTitle">인원 관리</h2><p id="personnelContext"></p></div><button id="closePersonnel" class="icon-btn" aria-label="인원 관리 닫기">×</button></div>
+    <p class="notice" id="personnelHint" role="status"></p>
+    <div id="personnelList"></div>
+    <button id="restorePeopleBtn" type="button" hidden>제외한 근무표 인원 복원</button>
+    <form id="personForm" class="person-form">
+      <label>이름<input id="personName" required maxlength="40" autocomplete="off" placeholder="이름 입력"></label>
+      <label>직종<select id="personKind"><option value="nurse">간호사</option><option value="staff">사원</option><option value="doctor">의사</option></select></label>
+      <label>선임 그룹<select id="personGroup"><option value="저연차">저연차</option><option value="중간년차">중간년차</option><option value="Charge">Charge</option></select></label>
+      <div class="person-form-actions"><button id="applyPersonBtn" type="submit">+ 인원 추가</button><button id="cancelPersonEdit" type="button" hidden>수정 취소</button></div>
+    </form>
+    <p class="notice">같은 선임 그룹에서는 원본 근무표 순서 다음으로 추가돼. 이름이 같아도 서로 다른 인원으로 관리해. 원본 Excel은 변경하지 않아.</p>
+    <div class="settings-actions"><button id="savePeopleBtn" class="primary" type="button">변경사항 저장</button></div>
+  </div>
 </div>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
@@ -192,7 +230,7 @@
       <p><b>근무표</b> 버튼에서 <b>＋ 근무표 저장</b>을 누르면 Excel을 불러와 브라우저에 저장해. 저장만 했다고 바로 현재 화면에 적용되지는 않아.</p>
       <p>저장된 목록에서 <b>사용</b>을 눌러야 해당 월 근무표가 현재 적용돼. <b>사용 중</b> 표시가 현재 적용된 근무표야.</p>
       <p>여러 월의 근무표를 동시에 보관할 수 있어. 다른 월을 저장하거나 사용해도 나머지 월의 저장 데이터에는 영향을 주지 않아.</p>
-      <p>같은 월의 근무표를 다시 저장하면 기존 파일을 교체할지 확인해. 교체하면 기존 그 월의 수동 수정사항도 함께 초기화돼.</p>
+      <p>같은 월의 근무표를 다시 저장하면 기존 파일을 교체할지 확인해. 교체하면 해당 근무표의 수동 수정사항과 인원 추가·제외·프로필 수정도 함께 초기화돼.</p>
       <p><b>삭제</b>하면 해당 근무표와 연결된 수동 수정사항이 함께 삭제돼. 현재 사용 중인 근무표를 삭제하면 샘플 데이터로 전환돼.</p>
     </div>
 
@@ -200,6 +238,7 @@
       <h3>③ 날짜 선택</h3>
       <p>상단 날짜를 누르면 달력이 열려. <b>‹ / ›</b>로 월을 이동하고 날짜를 선택할 수 있어. 앞·뒤 달에 표시된 날짜도 바로 선택할 수 있어.</p>
       <p><b>오늘</b> 버튼은 현재 날짜와 현재 시간대의 듀티로 돌아가. 달력은 <b>ESC</b> 또는 바깥 영역을 눌러 닫을 수 있어.</p>
+      <p>근무표에 선택한 날짜 열이 없으면 인원을 <b>확인 불가</b>로 표시해. 해당 날짜가 포함된 파일을 다시 불러와야 배치를 수정하거나 인쇄할 수 있어.</p>
     </div>
 
     <div class="help-section">
@@ -214,7 +253,7 @@
       <p><b>1번째 선임 → 통보연락반</b><br>
       <b>2·3번째 선임 → 소화반</b><br>
       <b>4번째 이하 → 대피유도반</b></p>
-      <p>현재 데이터에는 간호사만 포함되어 있으므로 다른 직종을 임의로 만들어 배치하지 않아. 실제 자료가 확보되면 이 규칙은 실제 대피배치판과 함께 다시 검토할 수 있어.</p>
+      <p>원본 근무표에는 간호사만 포함되어 있어. 인원 관리에서 사용자가 추가한 사원·의사는 대피유도반에 함께 배치해. 실제 자료가 확보되면 이 규칙은 실제 대피배치판과 함께 다시 검토할 수 있어.</p>
     </div>
 
     <div class="help-section">
@@ -227,11 +266,17 @@
 
     <div class="help-section">
       <h3>⑦ 수정사항 저장 · 초기화</h3>
+      <p><b>저장 중 → 트랜잭션 완료 → 다시 읽어 내용 일치 확인</b>을 모두 통과해야 성공 메시지를 표시해. 실패하면 입력을 유지하니 다시 시도해줘. 저장 상태와 원인은 화면의 저장 상태 영역에서 확인할 수 있어.</p>
       <p><b>수정사항 저장</b>을 누르면 현재 수동 수정이 브라우저 저장소에 저장돼. 따라서 새로고침하거나 브라우저를 다시 열어도 저장된 수정사항을 복원할 수 있어.</p>
       <p>각 역할의 <b>↺ 초기화</b>는 그 역할의 수동 수정만 제거하고 다른 역할의 수정은 유지해.</p>
       <p>수정 중 화면을 이동하려고 하면 저장하지 않은 변경사항이 있을 경우 확인창이 나타나.</p>
     </div>
 
+    <div class="help-section">
+      <h3>인원 추가 · 수정 · 삭제</h3>
+      <p><b>인원 관리</b>에서 이름·직종·선임 그룹을 입력하고 인원을 추가할 수 있어. 추가·삭제는 선택한 날짜·듀티에만 적용돼. 기존 인원의 이름·직종·그룹 수정은 해당 근무표 전체에 적용돼.</p>
+      <p>이미 배치된 사람을 삭제하면 확인 후 배정도 해제돼. 원본 근무표는 보존되며 제외한 원본 인원은 복원할 수 있어. 변경사항 저장을 눌러야 확정돼. 같은 이름도 내부 ID로 구분해.</p>
+    </div>
     <div class="help-section">
       <h3>⑧ 저장 데이터의 범위</h3>
       <p>근무표와 수동 수정사항은 <b>현재 사용하는 브라우저의 로컬 저장소</b>에 보관돼. 인터넷 서버에 자동으로 전송하는 기능은 현재 없어.</p>
@@ -255,7 +300,7 @@
 
     
     <div class="help-section">
-      <h3>⑧ 웹사이트로 사용할 때 알아둘 점</h3>
+      <h3>⑪ 웹사이트로 사용할 때 알아둘 점</h3>
       <p><b>프로그램은 안내받은 인터넷 주소(URL)를 열어서 사용해.</b> 프로그램 파일이나 HTML을 직접 열 필요 없이, 웹브라우저에서 주소를 열면 돼.</p>
       <p><b>저장한 근무표와 배치 내용은 사용한 컴퓨터의 해당 브라우저에 저장돼.</b> 인터넷에 있는 하나의 공용 저장공간에 저장하는 방식은 아니야.</p>
       <p>같은 컴퓨터에서 같은 브라우저를 계속 사용하면 브라우저를 닫았다가 다시 열어도 저장한 내용을 다시 사용할 수 있어.</p>
@@ -263,8 +308,16 @@
       <p>컴퓨터에 문제가 생기거나 브라우저의 사이트 데이터가 삭제되면 저장한 내용이 사라질 수 있어. <b>중요한 근무표는 별도로 보관하는 것을 권장해.</b></p>
       <p>여러 사람이 여러 컴퓨터에서 <b>하나의 근무표를 함께 조회하거나 수정</b>해야 하는 경우에는 현재 버전만으로는 부족해. 나중에 별도의 서버와 데이터베이스를 연결하는 개발이 필요해.</p>
     </div>
+<div class="help-section">
+      <h3>⑫ 수정 이력과 Excel 내려받기</h3>
+      <p><b>수정 이력</b>에서 근무표 등록·삭제, 인원·이름·역할 변경, 자동배치·수동 수정, 초기화와 저장 성공·실패를 최신순으로 확인해. v0.7.2 이후의 저장부터 기록하며, 저장하지 않은 입력과 메뉴 열기 등은 기록하지 않아.</p>
+      <p>시작일·종료일, 작업, 환경으로 필터하고 날짜별·환경별로 모아볼 수 있어. <b>현재 결과 내려받기</b>는 필터에 맞는 모든 이력을, <b>전체 이력 내려받기</b>는 전체를 Excel로 내려받아. 화면에 아직 더 보기를 하지 않은 이력도 포함돼.</p>
+      <p>각 기록에는 변경 전후, 결과, 앱 버전, 기기 유형·OS·브라우저 종류를 남겨. 이 정보는 브라우저가 제공하는 값으로 추정하며, 개인·기기를 식별하는 ID를 수집하지 않아. 이력 ID는 사건을 구분하기 위한 값이야.</p>
+      <p>이력은 운영 데이터와 별도 영역에 보관돼. 근무표 삭제·교체 후에도 남지만, 기기 간 공유되지 않고 사이트 데이터 삭제 시 함께 사라져. 이전 변경을 복구하는 백업이나 서버 감사로그는 아니야.</p>
+      <p><b>이력 저장 대기</b> 알림이 보이면 실제 데이터 저장 결과와 별도로 이력 저장을 재시도해줘. 대기 이력은 현재 창에만 있으므로 창을 닫기 전에 재시도하거나 Excel로 보관해. 저장 실패는 쓰기 또는 저장 후 확인 실패를 뜻하며, 실제 데이터가 일부 저장된 경우도 있어.</p>
+    </div>
 <div class="settings-actions">
-      <span class="settings-fixed">MICU 화재대피 인원배치 · v0.6.17 FINAL</span>
+      <span class="settings-fixed">MICU 화재대피 인원배치 · v0.7.2</span>
       <button id="closeHelp2" class="primary">확인</button>
     </div>
   </div>
@@ -297,6 +350,11 @@
 </div>
 
 <script src="vendor/xlsx.full.min.js"></script>
+<script src="storage.js"></script>
+<script src="audit.js"></script>
+<script src="audit-model.js"></script>
 <script src="script.js"></script>
+<script src="personnel.js"></script>
+<script src="history.js"></script>
 </body>
 </html>

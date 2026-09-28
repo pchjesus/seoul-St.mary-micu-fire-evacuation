@@ -1,0 +1,283 @@
+{
+  "date": "2026-09-24",
+  "environment": {
+    "browser": "Aside",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "width": 1440,
+    "height": 900,
+    "origin": "http://127.0.0.1:8073"
+  },
+  "results": [
+    {
+      "name": "9월 원본 그대로 가져오기",
+      "pass": true
+    },
+    {
+      "name": "10월 저장은 9월 사용/수정 유지",
+      "pass": true
+    },
+    {
+      "name": "10월 원본 그대로 가져오기",
+      "pass": true
+    },
+    {
+      "name": "31일 자료 없음과 실제 근무자 0명 구분",
+      "pass": false
+    },
+    {
+      "name": "31일 자료 없음과 실제 근무자 0명 구분 [재검사]",
+      "pass": false
+    },
+    {
+      "name": "자료 없는 날짜 인쇄 차단",
+      "pass": false
+    },
+    {
+      "name": "10월 1일 D 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "10월 1일 E 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "10월 1일 N 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "10월 15일 D 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "10월 15일 E 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "10월 15일 N 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "10월 30일 D 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "10월 30일 E 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "10월 30일 N 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "31일 자료 누락 안내와 편집 차단 [최종]",
+      "pass": true
+    },
+    {
+      "name": "자료 없는 날짜 인쇄 차단 [최종]",
+      "pass": true
+    },
+    {
+      "name": "9월 1일 D 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "9월 1일 E 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "9월 1일 N 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "9월 15일 D 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "9월 15일 E 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "9월 15일 N 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "9월 30일 D 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "9월 30일 E 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "9월 30일 N 화면 이름/반 배치",
+      "pass": true
+    },
+    {
+      "name": "9월 수정 저장값을 월 전환 후 복원",
+      "pass": true
+    },
+    {
+      "name": "10월 1일 D 화면 이름/반 배치 [최종]",
+      "pass": true
+    },
+    {
+      "name": "10월 1일 E 화면 이름/반 배치 [최종]",
+      "pass": true
+    },
+    {
+      "name": "10월 1일 N 화면 이름/반 배치 [최종]",
+      "pass": true
+    },
+    {
+      "name": "10월 15일 D 화면 이름/반 배치 [최종]",
+      "pass": true
+    },
+    {
+      "name": "10월 15일 E 화면 이름/반 배치 [최종]",
+      "pass": true
+    },
+    {
+      "name": "10월 15일 N 화면 이름/반 배치 [최종]",
+      "pass": true
+    },
+    {
+      "name": "10월 30일 D 화면 이름/반 배치 [최종]",
+      "pass": true
+    },
+    {
+      "name": "10월 30일 E 화면 이름/반 배치 [최종]",
+      "pass": true
+    },
+    {
+      "name": "10월 30일 N 화면 이름/반 배치 [최종]",
+      "pass": true
+    },
+    {
+      "name": "10월 배치 이름 수정 저장",
+      "pass": true
+    },
+    {
+      "name": "원본에서 사원 추가 및 배치 저장",
+      "pass": true
+    },
+    {
+      "name": "새로고침 후 10월 배치 수정과 추가 인원 복원",
+      "pass": true
+    },
+    {
+      "name": "월별 수정값 격리: 9월 유지/10월 추가 인원 혼입 없음",
+      "pass": true
+    },
+    {
+      "name": "편집 후 IndexedDB 원본 두 파일의 이름/근무코드 보존",
+      "pass": true
+    },
+    {
+      "name": "테스트 탭 전체 닫기 후 9월 활성 상태와 수정 복원",
+      "pass": true
+    },
+    {
+      "name": "테스트 탭 재접속 후 10월 배치와 추가 인원 복원",
+      "pass": true
+    },
+    {
+      "name": "제공 근무표 추가 인원 삭제 취소와 배정 해제 경고",
+      "pass": true
+    },
+    {
+      "name": "추가 인원 삭제 저장 후 배치 이름과 원본 유지",
+      "pass": true
+    },
+    {
+      "name": "설명서에 날짜 자료 누락 안내 표시",
+      "pass": true
+    },
+    {
+      "name": "추가 인원 삭제 결과 IndexedDB 재읽기",
+      "pass": true
+    }
+  ],
+  "notes": [
+    "최초 날짜 누락 검사 실패를 기록한 뒤 수정했다. 두 추가 실패는 이전 코드가 로드된 탭에서의 시도이며, hasRosterDay 함수 로드를 확인한 최종 재검사는 성공했다.",
+    "9월과 10월은 파일 내부 연도 정보가 없어 2026년으로 지정했다.",
+    "확인/경고창은 반환값과 메시지 주입으로 검사했으며 네이티브 대화상자를 클릭한 것은 아니다.",
+    "브라우저 프로세스를 종료하지 않고 테스트 탭 전체 닫기와 재접속을 검사했다."
+  ],
+  "sourceChecks": [
+    {
+      "file": "9월.xlsx",
+      "sha256": "6331236c172f8b251c633ef17ca07b148055de26316c4787c2d58f5c8a3b7b5b",
+      "rows": 20,
+      "days": 30,
+      "cellsMatched": 620,
+      "dayDutyChecks": 90,
+      "roleChecks": 270,
+      "totals": {
+        "D": 120,
+        "E": 120,
+        "N": 90
+      },
+      "codes": {
+        "E": 120,
+        "OF": 161,
+        "D": 120,
+        "NC": 29,
+        "N": 61,
+        "C": 20,
+        "PE": 27,
+        "NV": 4,
+        "V": 58
+      },
+      "missingDays": [],
+      "yearBasis": "프로젝트 문맥의 2026년으로 테스트 등록; 파일 자체에는 연도 없음"
+    },
+    {
+      "file": "10월.xlsx",
+      "sha256": "6331236c172f8b251c633ef17ca07b148055de26316c4787c2d58f5c8a3b7b5b",
+      "rows": 20,
+      "days": 30,
+      "cellsMatched": 620,
+      "dayDutyChecks": 90,
+      "roleChecks": 270,
+      "totals": {
+        "D": 120,
+        "E": 120,
+        "N": 90
+      },
+      "codes": {
+        "E": 120,
+        "OF": 161,
+        "D": 120,
+        "NC": 29,
+        "N": 61,
+        "C": 20,
+        "PE": 27,
+        "NV": 4,
+        "V": 58
+      },
+      "missingDays": [
+        31
+      ],
+      "yearBasis": "프로젝트 문맥의 2026년으로 테스트 등록; 파일 자체에는 연도 없음"
+    }
+  ],
+  "sourceIdenticalBytes": true,
+  "sourceUnchangedAfterTest": true,
+  "sourceRanges": {
+    "sheet": "시트1",
+    "dayHeader": "B2:AE2",
+    "names": "A3:A22",
+    "duties": "B3:AE22"
+  },
+  "finalDistinctBrowserChecks": 35,
+  "passedFinalDistinctBrowserChecks": 35,
+  "historicalAttempts": 47,
+  "historicalFailures": 3,
+  "missingDayDefectResolved": true,
+  "coverageLimits": [
+    "두 파일은 동일 바이트이므로 서로 다른 구조의 근무표 2종 검증은 아님",
+    "제공된 10월 파일에 31일이 없어 해당 일자의 정상 배치 검증 불가",
+    "직종/선임 정보가 없어 병원 업무상 순위 자체는 검증 불가",
+    "Windows Google Chrome, 실제 휴대폰, 브라우저 전체 프로세스 재시작은 이번 검사에서 수행하지 않음"
+  ]
+}
