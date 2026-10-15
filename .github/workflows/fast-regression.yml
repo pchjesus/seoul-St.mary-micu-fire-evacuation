@@ -1,0 +1,33 @@
+name: MICU v0.7.2 Fast Regression
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Private-ready B+: cancel only superseded PR checks.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  fast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked test dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts
+      - name: Check JavaScript syntax
+        run: npm run check
+      - name: Run existing unit and storage contract tests
+        run: npm test
+# This FAST workflow does not claim mobile/IndexedDB real-device acceptance or FINAL.
