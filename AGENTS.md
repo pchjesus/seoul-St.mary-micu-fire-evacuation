@@ -1,3 +1,7 @@
+## Development B+ / CI operating policy (approved 2026-10-15)
+
+Before planning a release-size change, read [docs/AI_ASSISTED_DEVELOPMENT_BPLUS_v1.0.md](docs/AI_ASSISTED_DEVELOPMENT_BPLUS_v1.0.md). Prefer one coherent version-level design and PR over repeated user-facing micro-releases; keep small reversible internal commits and repeated targeted verification. Use FAST + risk-selected FOCUSED PR validation and FULL on high-impact changes/release; retain all project-specific safety, simulation, persistence, clinical and historical regression contracts. No user-visible feature or CI PASS is implied by policy-only changes. This section is subordinate to previously user-approved project-specific technical protections.
+
 # MICU 화재대피 인원배치 개발 지침
 
 ## 1. 프로젝트 목적
