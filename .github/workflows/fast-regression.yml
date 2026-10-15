@@ -20,14 +20,27 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: B+ risk classification
+        id: scope
+        env:
+          CI_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          bash scripts/ci-scope.sh --self-test
+          bash scripts/ci-scope.sh
       - uses: actions/setup-node@v4
+        if: steps.scope.outputs.tier != 'docs'
         with:
           node-version: '22'
           cache: npm
       - name: Install locked test dependencies without lifecycle scripts
+        if: steps.scope.outputs.tier != 'docs'
         run: npm ci --ignore-scripts
       - name: Check JavaScript syntax
+        if: steps.scope.outputs.tier != 'docs'
         run: npm run check
       - name: Run existing unit and storage contract tests
+        if: steps.scope.outputs.tier != 'docs'
         run: npm test
 # This FAST workflow does not claim mobile/IndexedDB real-device acceptance or FINAL.
