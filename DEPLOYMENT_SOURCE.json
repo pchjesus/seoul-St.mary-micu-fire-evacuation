@@ -1,0 +1,34 @@
+{
+  "type": "micu-static-pages-mirror",
+  "sourceRepository": "pchjesus/micu-fire-evacuation",
+  "sourceCommit": "da864bffa1a7b118c57581e8d09420881b77c80c",
+  "sourceVersion": "v0.7.5 RC",
+  "dbSchemaVersion": 4,
+  "publishedRepository": "pchjesus/seoul-St.mary-micu-fire-evacuation",
+  "publishedSite": "https://pchjesus.github.io/seoul-St.mary-micu-fire-evacuation/",
+  "baseMirrorCommit": "b3dc70bcab3c872369cce4935c4ca2882fb03130",
+  "sourceBlobShas": {
+    "index.html": "8cf8b34c637661d6befe9d4cd0aa62582bf3427c",
+    "style.css": "21835033a65a0533a82cc0a4ab79720695d74e61",
+    "storage.js": "c53961170d2863d2a07c653044a30ca3fc601dea",
+    "audit.js": "1022df600b7930dc6ab838654f4c274fbfd4227f",
+    "audit-model.js": "ace60d90254403fb452f1352a791a0142f5818c3",
+    "script.js": "699e6d6f83808371323faaca6188976e20a25695",
+    "personnel.js": "aa428b9fd634ca67fb138389757fb32e3a490c32",
+    "history.js": "adf5aaf999de612a013ced581f92f0c75415ccff",
+    "build-info.js": "80473d4c32c74c6f4f3c135ea965b364f0a0d232",
+    "data/sample-roster.js": "13362ae26d5dca06a9500a0f9977eef65dbf53bc",
+    "domain/config.js": "09b92da2d54b678622bd52ba8135335f83d6a1cd",
+    "domain/roster-model.js": "82ad20512b6bdca72ea8117abd8fde9fd57d78fb",
+    "domain/roster-parser.js": "aeacae7ce320866aabeb8365afa201b35f7b9c0a",
+    "domain/change-events.js": "9377058b403ed30177540cf4d891640ab7d99a15",
+    "domain/backup-format.js": "2138c87f6e7cda7323e378440e7d800da5283ebe",
+    "ui/import-review.js": "b7243cf453b823bb58f46f90cdc1a21a3f02ce36",
+    "ui/backup-panel.js": "307e3ee326288f5460e6f03dcb91aa5209d6e082",
+    "vendor/xlsx.full.min.js": "16e013fceefc689cabc5be352099199847a0e67f"
+  },
+  "buildTransform": {
+    "build-info.js": "Replace only `const revision = null;` with sourceCommit before publication."
+  },
+  "note": "No code is authored in this mirror. Canonical source, tests and rules live exclusively in pchjesus/micu-fire-evacuation main."
+}
