@@ -32,5 +32,5 @@ assert 'script.js?v=0.7.5-db4' in html
 assert "indexedDB.open(DB_NAME, 4)" in storage
 assert "indexedDB.open(DB_NAME, 3)" not in storage
 sources=re.findall(r'(?:src|href)="([^"]+\.(?:js|css))(?:\?[^"]*)?"',html)
-assert set(sources)==set(expected)-{'build-info.js'}|{'build-info.js'}
+assert set(sources)==set(expected)-{'index.html'}, f'Unexpected page assets: {set(sources) ^ (set(expected)-{'index.html'})}'
 print(f'PASS: {len(expected)} canonical runtime assets match {source_sha}; IndexedDB v4; cache bust present')
