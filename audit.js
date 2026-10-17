@@ -1,6 +1,6 @@
 /* One event boundary for local history; replace the adapter to use a future API. */
 const Audit = (() => {
-  const labels = Object.freeze({roster_registered:'근무표 등록',roster_replaced:'근무표 교체',roster_deleted:'근무표 삭제',roster_selected:'근무표 사용',person_added:'인원 추가',person_deleted:'인원 삭제',person_restored:'인원 복원',name_changed:'이름 수정',role_changed:'역할 수정',assignment_changed:'배치 변경',auto_assignment:'자동배치',manual_override:'수동 override',data_reset:'데이터 초기화',save_success:'저장 성공',save_failure:'저장 실패'});
+  const labels = Object.freeze({backup_restored:'전체 백업 복원',roster_registered:'근무표 등록',roster_replaced:'근무표 교체',roster_deleted:'근무표 삭제',roster_selected:'근무표 사용',person_added:'인원 추가',person_deleted:'인원 삭제',person_restored:'인원 복원',name_changed:'이름 수정',role_changed:'역할 수정',assignment_changed:'배치 변경',auto_assignment:'자동배치',manual_override:'수동 override',data_reset:'데이터 초기화',save_success:'저장 성공',save_failure:'저장 실패'});
   const adapter = {append:rows => AppStorage.appendLogs(rows), list:() => AppStorage.listLogs()};
   let pending = [];
   let flushing = null;

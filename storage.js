@@ -1,10 +1,11 @@
-/* v0.7.2: IndexedDB is authoritative. Legacy mirrors are imported once only. */
-const APP_VERSION = '0.7.2';
+/* IndexedDB is authoritative. Legacy mirrors are imported once only. */
+const APP_VERSION = '0.7.5';
 const AppStorage = (() => {
   const DB_NAME = 'fireEvacuationRosterDB_v0617';
   const STORES = ['rosters', 'overrides', 'personnel', 'meta'];
   let connection;
   let opening;
+  let sessionEpoch = null;
 
   function openDB() {
     if (connection) return Promise.resolve(connection);
@@ -20,14 +21,19 @@ const AppStorage = (() => {
       }
       if (!globalThis.indexedDB) { fail(new Error('이 브라우저에서 IndexedDB를 사용할 수 없어.')); return; }
       let request;
-      try { request = indexedDB.open(DB_NAME, 3); }
+      // v4 fences older app tabs which do not understand full-data restore epochs.
+      try { request = indexedDB.open(DB_NAME, 4); }
       catch (error) { fail(error); return; }
       request.onupgradeneeded = () => {
         for (const name of [...STORES, 'logs']) {
           if (!request.result.objectStoreNames.contains(name)) request.result.createObjectStore(name, {keyPath:'id'});
         }
       };
-      request.onerror = () => fail(request.error);
+      request.onerror = () => {
+        if (request.error?.name === 'VersionError') {
+          fail(new Error('저장된 데이터가 현재 실행 중인 앱보다 새로운 버전이야. 최신 MICU 웹사이트에서 다시 열어줘. 기존 데이터를 보존하려면 사이트 데이터 삭제나 초기화를 하지 마.'));
+        } else fail(request.error);
+      };
       request.onblocked = () => fail(new Error('저장소 업데이트가 대기 중이야. 이 앱의 다른 탭을 닫고 다시 시도해줘.'));
       request.onsuccess = () => {
         if (settled) { request.result.close(); return; }
@@ -46,10 +52,11 @@ const AppStorage = (() => {
     const db = await openDB();
     return new Promise((resolve, reject) => {
       let tx;
-      try { tx = db.transaction(names, mode, {durability:'strict'}); }
+      const stores = mode==='readwrite' ? [...new Set([...names,'meta'])] : names;
+      try { tx = db.transaction(stores, mode, {durability:'strict'}); }
       catch (error) {
         if (!(error instanceof TypeError)) { reject(error); return; }
-        tx = db.transaction(names, mode);
+        tx = db.transaction(stores, mode);
       }
       let result;
       let cause;
@@ -60,8 +67,19 @@ const AppStorage = (() => {
       }, 8000);
       tx.oncomplete = () => { clearTimeout(timer); resolve(result); };
       tx.onabort = tx.onerror = () => { clearTimeout(timer); reject(cause || tx.error || new Error('저장 트랜잭션이 중단됐어.')); };
-      try { callback(tx, value => { result = value; }, error => { cause = error; tx.abort(); }); }
-      catch (error) { cause = error; tx.abort(); }
+      const invoke = () => {
+        try { callback(tx, value => { result = value; }, error => { cause = error; tx.abort(); }); }
+        catch (error) { cause = error; tx.abort(); }
+      };
+      if(mode==='readwrite') {
+        const epoch=tx.objectStore('meta').get('storageEpoch');
+        epoch.onsuccess=()=>{
+          const current=epoch.result?.value || 0;
+          if(sessionEpoch===null)sessionEpoch=current;
+          if(sessionEpoch!==current){cause=new Error('다른 탭에서 전체 데이터를 복원했어. 이 창을 새로고침한 뒤 다시 작업해줘.');tx.abort();return;}
+          invoke();
+        };
+      } else invoke();
     });
   }
   const read = (store, id) => transaction([store], 'readonly', (tx, done) => {
@@ -139,19 +157,27 @@ const AppStorage = (() => {
     await transaction(['meta'], 'readwrite', tx => tx.objectStore('meta').put(value));
     verify(await read('meta', value.id), value);
   }
-  async function saveRoster(record, replace = false) {
+  async function saveRoster(record, replace = false, expectedCurrent = null) {
     const safe = JSON.parse(JSON.stringify({...record, sourceBlob:undefined}));
     await transaction(STORES, 'readwrite', (tx, done, fail) => {
       const existing = tx.objectStore('rosters').get(safe.id);
       existing.onsuccess = () => {
         if (existing.result && !replace) { fail(new Error('같은 월의 근무표가 다른 탭에서 저장됐어. 보관함을 다시 열어줘.')); return; }
-        tx.objectStore('rosters').put(safe);
-        if (replace) {
-          clearScope(tx, 'overrides', safe.id);
-          tx.objectStore('personnel').delete(safe.id);
-          const revision = tx.objectStore('meta').get(`revision:${safe.id}`);
-          revision.onsuccess = () => tx.objectStore('meta').put({id:`revision:${safe.id}`, value:(revision.result?.value || 0) + 1});
+        if (expectedCurrent && JSON.stringify(canonical(existing.result)) !== JSON.stringify(canonical(expectedCurrent.record))) {
+          fail(new Error('다른 탭에서 근무표가 교체·삭제됐어. 보관함을 다시 열어 확인해줘.')); return;
         }
+        if (replace) {
+          const revision = tx.objectStore('meta').get(`revision:${safe.id}`);
+          revision.onsuccess = () => {
+            if (expectedCurrent && (revision.result?.value || 0) !== expectedCurrent.revision) {
+              fail(new Error('다른 탭에서 인원·배치가 변경됐어. 교체를 중단했어. 최신 자료를 확인해줘.')); return;
+            }
+            tx.objectStore('rosters').put(safe);
+            clearScope(tx, 'overrides', safe.id);
+            tx.objectStore('personnel').delete(safe.id);
+            tx.objectStore('meta').put({id:`revision:${safe.id}`, value:(revision.result?.value || 0) + 1});
+          };
+        } else tx.objectStore('rosters').put(safe);
       };
     });
     verify(await read('rosters', safe.id), safe);
@@ -162,15 +188,26 @@ const AppStorage = (() => {
     }
     return safe;
   }
-  async function deleteRoster(id) {
-    await transaction(STORES, 'readwrite', tx => {
-      tx.objectStore('rosters').delete(id);
-      clearScope(tx, 'overrides', id);
-      tx.objectStore('personnel').delete(id);
-      const revision = tx.objectStore('meta').get(`revision:${id}`);
-      revision.onsuccess = () => tx.objectStore('meta').put({id:`revision:${id}`, value:(revision.result?.value || 0) + 1});
-      const active = tx.objectStore('meta').get('activeRosterId');
-      active.onsuccess = () => { if (active.result?.value === id) tx.objectStore('meta').put({id:'activeRosterId',value:null}); };
+  async function deleteRoster(id, expectedCurrent = null) {
+    await transaction(STORES, 'readwrite', (tx, done, fail) => {
+      const existing = tx.objectStore('rosters').get(id);
+      existing.onsuccess = () => {
+        if (expectedCurrent && JSON.stringify(canonical(existing.result)) !== JSON.stringify(canonical(expectedCurrent.record))) {
+          fail(new Error('다른 탭에서 근무표가 교체·삭제됐어. 삭제를 중단했어.')); return;
+        }
+        const revision = tx.objectStore('meta').get(`revision:${id}`);
+        revision.onsuccess = () => {
+          if (expectedCurrent && (revision.result?.value || 0) !== expectedCurrent.revision) {
+            fail(new Error('다른 탭에서 인원·배치가 변경됐어. 삭제를 중단했어.')); return;
+          }
+          tx.objectStore('rosters').delete(id);
+          clearScope(tx, 'overrides', id);
+          tx.objectStore('personnel').delete(id);
+          tx.objectStore('meta').put({id:`revision:${id}`, value:(revision.result?.value || 0) + 1});
+          const active = tx.objectStore('meta').get('activeRosterId');
+          active.onsuccess = () => { if (active.result?.value === id) tx.objectStore('meta').put({id:'activeRosterId',value:null}); };
+        };
+      };
     });
     verify(await read('rosters', id), null);
     const state = await readState(id);
@@ -207,6 +244,8 @@ const AppStorage = (() => {
     try { const value = localStorage.getItem(key); return value ? JSON.parse(value) : fallback; } catch (_) { return fallback; }
   }
   async function initialize() {
+    // Initialization is also the explicit refresh boundary after a restore.
+    sessionEpoch=(await read('meta','storageEpoch'))?.value || 0;
     // Keep the v0.6.17 database name: existing v0.7.0 data must survive upgrades.
     await transaction(STORES, 'readwrite', tx => {
       const marker = tx.objectStore('meta').get('migration:0.7.1');
@@ -243,7 +282,64 @@ const AppStorage = (() => {
       };
     });
   }
-  return {appendLogs, listLogs:() => read('logs'), openDB, initialize, readState, saveState, saveRoster, deleteRoster, setActiveId, emptyPersonnel,
+  const ALL_STORES=[...STORES,'logs'];
+  function snapshotInTransaction(tx,done) {
+    const snapshot={};let remaining=ALL_STORES.length;
+    for(const name of ALL_STORES){
+      const request=tx.objectStore(name).getAll();
+      request.onsuccess=()=>{
+        snapshot[name]=request.result.sort((a,b)=>a.id<b.id?-1:a.id>b.id?1:0);
+        if(--remaining===0)done(snapshot);
+      };
+    }
+  }
+  function exportSnapshot() {
+    return transaction(ALL_STORES,'readonly',(tx,done)=>snapshotInTransaction(tx,done));
+  }
+  async function restoreSnapshot(incoming,expectedCurrent) {
+    // Validate before touching any persistent data; validation is shared with import UI.
+    BackupFormat.validateSnapshot(incoming);
+    if(!expectedCurrent)throw new Error('현재 데이터 확인 없이 복원할 수 없어. 백업 파일을 다시 선택해줘.');
+    let restored, committed=false;
+    try {
+      await transaction(ALL_STORES,'readwrite',(tx,done,fail)=>{
+        snapshotInTransaction(tx,current=>{
+          try {
+            verify(current,expectedCurrent);
+            restored=JSON.parse(JSON.stringify(incoming));
+            const meta=new Map(restored.meta.map(row=>[row.id,row]));
+            const currentMeta=new Map(current.meta.map(row=>[row.id,row]));
+            const revisionIds=new Set([...current.meta,...restored.meta].filter(row=>row.id.startsWith('revision:')).map(row=>row.id));
+            for(const id of [...current.rosters,...restored.rosters].map(row=>row.id))revisionIds.add(`revision:${id}`);
+            revisionIds.add('revision:sample:2026-09');
+            for(const id of revisionIds)meta.set(id,{id,value:Math.max(currentMeta.get(id)?.value||0,meta.get(id)?.value||0)+1});
+            meta.set('storageEpoch',{id:'storageEpoch',value:(currentMeta.get('storageEpoch')?.value||0)+1});
+            meta.set('migration:0.7.1',{id:'migration:0.7.1',value:true});
+            restored.meta=[...meta.values()];
+            for(const name of ALL_STORES){
+              restored[name].sort((a,b)=>a.id<b.id?-1:a.id>b.id?1:0);
+              const store=tx.objectStore(name);store.clear();
+              restored[name].forEach(row=>store.put(row));
+            }
+          } catch(error) {
+            fail(new Error(`복원을 중단했어. 기존 데이터는 유지돼. ${error.message} 미리보기를 다시 열고 현재 백업을 보관해줘.`));
+          }
+        });
+      });
+      committed=true;
+      sessionEpoch=restored.meta.find(row=>row.id==='storageEpoch').value;
+      verify(await exportSnapshot(),restored);
+      return restored;
+    } catch(error) {
+      if(committed){
+        const uncertain=new Error('복원 쓰기는 완료했지만 다시 읽기 확인에 실패했어. 복원을 반복하지 말고 새로고침 후 내용을 확인해줘. 복원 전 백업은 보관해줘.');
+        uncertain.restoreCommitted=true;throw uncertain;
+      }
+      throw error;
+    }
+  }
+  return {exportSnapshot,restoreSnapshot,appendLogs, listLogs:() => read('logs'), openDB, initialize, readState, saveState, saveRoster, deleteRoster, setActiveId, emptyPersonnel,
     getActiveId:async () => (await read('meta','activeRosterId'))?.value || null,
     listRosters:() => read('rosters'), getRoster:id => read('rosters',id)};
 })();
+
