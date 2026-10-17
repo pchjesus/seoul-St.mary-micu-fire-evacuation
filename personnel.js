@@ -17,6 +17,8 @@ function personKindLabel(person) {
 function resetPersonForm() {
   editingPersonId = null;
   $('personForm').reset();
+  const groups=[...RosterModel.rulesFor(getRosterForDate(selectedDate)).groupOrder].reverse();
+  $('personGroup').replaceChildren(...groups.map(group=>new Option(group,group)));
   $('personGroup').disabled = false;
   $('applyPersonBtn').textContent = '+ 인원 추가';
   $('cancelPersonEdit').hidden = true;
@@ -35,7 +37,9 @@ function renderPersonnel() {
       editingPersonId = person.id;
       $('personName').value = person.name;
       $('personKind').value = person.kind;
-      $('personGroup').value = person.group || '저연차';
+      const group=person.group || $('personGroup').options[0]?.value;
+      if(group && ![...$('personGroup').options].some(option=>option.value===group)) $('personGroup').add(new Option(group,group));
+      $('personGroup').value = group;
       $('personGroup').disabled = person.kind !== 'nurse';
       $('applyPersonBtn').textContent = '수정 적용';
       $('cancelPersonEdit').hidden = false;

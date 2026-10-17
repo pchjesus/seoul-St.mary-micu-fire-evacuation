@@ -1,34 +1,3 @@
-const SAMPLE = {
-  year: 2026,
-  month: 9,
-  groups: [
-    {name:'Charge', people:['김서윤','박지훈','이하은','최민재','정수빈','한도윤','윤채원','강현우']},
-    {name:'중간년차', people:['송예린','조성민','임나연','오준혁','서지민','배현서']},
-    {name:'저연차', people:['권도현','신유진','문재현','류하린','장민석','홍예은']}
-  ],
-  rows: [
-    ['김서윤', 'EFE', 'E', 'N', 'N', 'OF', 'OF', 'D', 'E', 'E', 'E', 'OF', 'OF', 'OF', 'E', 'N', 'N', 'OF', 'OF', 'E', 'E', 'E', 'OF', 'C', 'PE', 'V', 'D', 'D', 'V', 'V', 'D', 'D'],
-    ['박지훈', 'NNF', 'OF', 'E', 'E', 'E', 'OF', 'OF', 'OF', 'D', 'N', 'OF', 'OF', 'D', 'D', 'D', 'D', 'E', 'OF', 'OF', 'E', 'E', 'OF', 'C', 'PE', 'D', 'D', 'N', 'PE', 'V', 'V', 'N'],
-    ['이하은', 'FFD', 'D', 'D', 'D', 'D', 'OF', 'OF', 'OF', 'OF', 'D', 'E', 'N', 'OF', 'OF', 'D', 'D', 'D', 'OF', 'OF', 'D', 'D', 'C', 'PE', 'D', 'N', 'N', 'PE', 'V', 'V', 'V', 'D'],
-    ['최민재', 'FNN', 'NC', 'OF', 'OF', 'OF', 'NC', 'NC', 'NC', 'OF', 'OF', 'OF', 'OF', 'NC', 'NC', 'OF', 'C', 'PE', 'NC', 'NC', 'NC', 'PE', 'NV', 'NC', 'NC', 'NC', 'NV', 'V', 'NC', 'NC', 'V', 'V'],
-    ['정수빈', 'DEF', 'OF', 'D', 'D', 'D', 'OF', 'OF', 'D', 'D', 'E', 'E', 'E', 'OF', 'OF', 'OF', 'OF', 'OF', 'C', 'D', 'D', 'D', 'D', 'D', 'PE', 'PE', 'V', 'D', 'D', 'E', 'E', 'V'],
-    ['한도윤', 'FEE', 'E', 'N', 'N', 'OF', 'OF', 'E', 'E', 'OF', 'OF', 'D', 'E', 'E', 'OF', 'OF', 'N', 'N', 'OF', 'OF', 'E', 'C', 'PE', 'D', 'E', 'E', 'E', 'V', 'V', 'N', 'N', 'V'],
-    ['윤채원', 'EEE', 'E', 'OF', 'OF', 'OF', 'D', 'D', 'E', 'E', 'OF', 'OF', 'N', 'N', 'OF', 'OF', 'OF', 'D', 'D', 'D', 'C', 'PE', 'E', 'E', 'E', 'E', 'V', 'V', 'V', 'V', 'E', 'E'],
-    ['강현우', 'FDD', 'D', 'E', 'OF', 'OF', 'D', 'OF', 'OF', 'OF', 'D', 'D', 'D', 'D', 'D', 'OF', 'OF', 'D', 'D', 'D', 'OF', 'C', 'E', 'N', 'N', 'PE', 'V', 'V', 'V', 'D', 'D', 'E'],
-    ['송예린', 'FDD', 'NC', 'OF', 'OF', 'NC', 'OF', 'OF', 'OF', 'NC', 'NC', 'NC', 'OF', 'OF', 'NC', 'NC', 'OF', 'NV', 'NC', 'NV', 'C', 'NC', 'NC', 'PE', 'V', 'NC', 'NC', 'V', 'V', 'NC', 'NC', 'NC'],
-    ['조성민', 'FFN', 'OF', 'OF', 'D', 'D', 'D', 'D', 'D', 'OF', 'OF', 'N', 'OF', 'OF', 'D', 'D', 'E', 'OF', 'OF', 'D', 'D', 'N', 'N', 'C', 'PE', 'D', 'E', 'E', 'E', 'V', 'V', 'V'],
-    ['임나연', 'FNN', 'OF', 'OF', 'D', 'E', 'E', 'E', 'OF', 'OF', 'OF', 'OF', 'D', 'D', 'OF', 'OF', 'N', 'N', 'C', 'PE', 'D', 'D', 'D', 'D', 'E', 'V', 'V', 'E', 'E', 'E', 'E', 'V'],
-    ['오준혁', 'NNF', 'OF', 'E', 'E', 'E', 'OF', 'OF', 'D', 'D', 'OF', 'OF', 'E', 'E', 'E', 'E', 'OF', 'OF', 'D', 'E', 'E', 'N', 'N', 'OF', 'C', 'PE', 'D', 'D', 'D', 'PE', 'V', 'V'],
-    ['서지민', 'FEE', 'OF', 'OF', 'E', 'E', 'E', 'OF', 'N', 'N', 'OF', 'OF', 'D', 'D', 'OF', 'OF', 'D', 'N', 'N', 'OF', 'C', 'PE', 'PE', 'V', 'D', 'D', 'D', 'N', 'N', 'V', 'V', 'D'],
-    ['배현서', 'DDD', 'D', 'D', 'OF', 'OF', 'OF', 'E', 'E', 'E', 'OF', 'OF', 'N', 'N', 'OF', 'OF', 'E', 'E', 'E', 'E', 'OF', 'C', 'D', 'E', 'PE', 'V', 'V', 'V', 'E', 'E', 'E', 'E'],
-    ['권도현', 'EFF', 'D', 'D', 'E', 'OF', 'D', 'D', 'N', 'N', 'OF', 'OF', 'E', 'E', 'E', 'E', 'OF', 'OF', 'E', 'N', 'N', 'OF', 'OF', 'D', 'D', 'OF', 'C', 'E', 'E', 'E', 'PE', 'V'],
-    ['신유진', 'EEE', 'E', 'E', 'OF', 'OF', 'N', 'N', 'OF', 'OF', 'D', 'D', 'D', 'E', 'OF', 'OF', 'D', 'D', 'D', 'OF', 'OF', 'D', 'D', 'C', 'PE', 'E', 'N', 'V', 'V', 'D', 'D', 'V'],
-    ['문재현', 'NFF', 'N', 'N', 'OF', 'OF', 'E', 'E', 'OF', 'OF', 'N', 'N', 'OF', 'OF', 'OF', 'E', 'E', 'E', 'E', 'OF', 'C', 'E', 'PE', 'V', 'D', 'D', 'E', 'E', 'V', 'V', 'N', 'N'],
-    ['류하린', 'DEF', 'OF', 'OF', 'OF', 'N', 'N', 'OF', 'OF', 'E', 'E', 'E', 'OF', 'OF', 'N', 'N', 'OF', 'C', 'PE', 'N', 'N', 'V', 'V', 'E', 'E', 'E', 'V', 'V', 'D', 'D', 'D', 'D'],
-    ['장민석', 'FDD', 'OF', 'OF', 'N', 'N', 'OF', 'OF', 'D', 'D', 'D', 'D', 'OF', 'OF', 'E', 'E', 'E', 'E', 'OF', 'OF', 'C', 'E', 'E', 'E', 'PE', 'V', 'E', 'N', 'N', 'V', 'V', 'E'],
-    ['홍예은', 'DDN', 'OF', 'OF', 'OF', 'D', 'E', 'N', 'OF', 'OF', 'E', 'E', 'OF', 'OF', 'D', 'D', 'OF', 'C', 'E', 'E', 'PE', 'PE', 'E', 'N', 'N', 'V', 'V', 'D', 'D', 'D', 'V', 'V']
-  ]};
-
 const DUTIES=['D','E','N'];
 const DUTY_INFO={
   D:{label:'Day',time:'07:00–15:30'},
@@ -47,7 +16,8 @@ let calendarCursor=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1
 let settings={...DEFAULT_SETTINGS};
 let dataSource='sample';
 let sourceFileName='샘플 데이터';
-let pendingRoster=null,pendingFileName='',pendingFileBlob=null;
+let importReview=null;
+let backupPanel=null;
 let editMode=false;
 let manualAssignments={};
 let draftAssignments={};
@@ -61,24 +31,8 @@ let storageReady=false;
 
 const $ = id => document.getElementById(id);
 
-function buildRosterFromSample(){
-  const all=[];
-  SAMPLE.groups.forEach(g=>g.people.forEach(name=>all.push({name,group:g.name})));
-  const shifts={};
-  for(let day=1;day<=30;day++){
-    shifts[String(day)]=SAMPLE.rows.map(r=>r[day+1]||'');
-  }
-  return {id:'sample:'+rosterKey(SAMPLE.year,SAMPLE.month),year:SAMPLE.year,month:SAMPLE.month,all,shifts,groups:SAMPLE.groups,maxDay:30,schemaVersion:ROSTER_SCHEMA_VERSION};
-}
-
-function normalizeDuty(v){
-  // 근무자로 인정되는 코드는 D / E / N / NC뿐이다.
-  // NV, OF, C, PE, V 등은 어떤 경우에도 근무자로 변환하지 않는다.
-  const code=String(v??'').trim().toUpperCase();
-  if(code==='NC') return 'N';
-  if(code==='D'||code==='E'||code==='N') return code;
-  return null;
-}
+function buildRosterFromSample(){ return SampleRoster.build(); }
+function normalizeDuty(value){ return RosterModel.normalizeDuty(value); }
 
 function groupClass(group){
   return group==='Charge'?'charge':group==='중간년차'?'mid':'junior';
@@ -111,52 +65,27 @@ function getRosterForDate(date){
   return null;
 }
 
-function hasRosterDay(date,rosterRef=getRosterForDate(date)){
-  return Boolean(rosterRef && date.getFullYear()===rosterRef.year && date.getMonth()+1===rosterRef.month && Array.isArray(rosterRef.shifts?.[String(date.getDate())]));
-}
+// Compatibility boundary for the existing UI; calculations have explicit inputs.
+function hasRosterDay(date,source=getRosterForDate(date)){ return RosterModel.hasRosterDay(date,source); }
+function personId(source,index){ return RosterModel.personId(source,index); }
+function contextId(date=selectedDate,duty=selectedDuty){ return RosterModel.contextId(date,duty); }
+function getOnDuty(date,duty,source=getRosterForDate(date),people=personnel){ return RosterModel.getOnDuty(date,duty,source,people); }
+function automaticGroups(staff,source){ return RosterModel.automaticGroups(staff,source); }
+function rekeyAssignments(assignments,source,people){ return RosterModel.rekeyAssignments(assignments,source,people); }
+function getDutyFromClock(date){ return RosterModel.getDutyFromClock(date,RosterModel.rulesFor(roster)); }
 
-function personId(rosterRef,index){ return `source:${rosterRef.id}:${index}`; }
-function contextId(date=selectedDate,duty=selectedDuty){ return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}-${duty}`; }
-function getOnDuty(date,duty,rosterRef=getRosterForDate(date),people=personnel){
-  if(!rosterRef || date.getFullYear()!==rosterRef.year || date.getMonth()+1!==rosterRef.month) return [];
-  const arr=rosterRef.shifts[String(date.getDate())]||[];
-  const state=people?.id===rosterRef.id ? people : AppStorage.emptyPersonnel(rosterRef.id);
-  const scope=state.contexts[contextId(date,duty)] || {added:[],excluded:[]};
-  const source=rosterRef.all.map((p,i)=>({...p,id:personId(rosterRef,i),kind:'nurse',order:i,duty:normalizeDuty(arr[i])})).filter(p=>p.duty===duty);
-  return [...source,...scope.added.map((p,i)=>({...p,duty,order:rosterRef.all.length+i}))]
-    .filter(p=>!scope.excluded.includes(p.id)).map(p=>({...p,...state.profiles[p.id]}));
+function renderRuleDetails(rules){
+  const descriptions=[
+    [rules.roles.notification,`선임 간호사 ${rules.notificationCount}명`],
+    [rules.roles.fire,`그다음 간호사 ${rules.fireCount}명`],
+    [rules.roles.evacuation,'나머지 간호사 + 사원 + 의사']
+  ];
+  $('ruleDetails').replaceChildren(...descriptions.map(([name,description])=>{
+    const row=document.createElement('div'),label=document.createElement('b'),detail=document.createElement('span');
+    label.textContent=name;detail.textContent=description;row.append(label,detail);return row;
+  }));
+  $('assignmentRuleSummary').textContent=descriptions.map(([name,description])=>`${name}: ${description}`).join(' / ');
 }
-function automaticGroups(staff,rosterRef){
-  const nurses=staff.filter(p=>p.kind==='nurse').sort((a,b)=>groupIndex(a.group,rosterRef)-groupIndex(b.group,rosterRef)||a.order-b.order);
-  return {'통보연락반':nurses.slice(0,1),'소화반':nurses.slice(1,3),'대피유도반':[...nurses.slice(3),...staff.filter(p=>p.kind!=='nurse')]};
-}
-function rekeyAssignments(assignments,source,people){
-  const result={};
-  for(const [key,value] of Object.entries(assignments)){
-    const [id,context]=key.split('|');
-    if(typeof value==='string'){ result[key]=value; continue; }
-    const match=/^(\d+)-(\d+)-(\d+)-([DEN])$/.exec(context);
-    if(!match || id!==source.id) continue;
-    const date=new Date(Number(match[1]),Number(match[2])-1,Number(match[3]));
-    const groups=automaticGroups(getOnDuty(date,match[4],source,people),source);
-    for(const [role,staff] of Object.entries(groups)){
-      const slot=staff.findIndex(person=>person.id===value.personId);
-      if(slot>=0) result[`${id}|${context}|${role}|${slot}`]=value;
-    }
-  }
-  return result;
-}
-
-function getDutyFromClock(date){
-  // 야간근무(N)는 시작일 기준으로 표시한다.
-  // 22:00~익일 07:30은 전날 날짜의 N 근무로 취급한다.
-  // 경계: 07:30 D 시작 / 15:00 E 시작 / 22:00 N 시작.
-  const mins=date.getHours()*60+date.getMinutes();
-  if(mins>=450 && mins<900) return 'D';       // 07:30–14:59
-  if(mins>=900 && mins<1320) return 'E';      // 15:00–21:59
-  return 'N';                                 // 22:00–07:29
-}
-
 
 function renderCurrentClock(){
   const now=new Date();
@@ -176,7 +105,6 @@ function render(){
   $('dateSmall').textContent=`${m}월 ${d}일 ${dow}요일`;
   $('dateMain').textContent=`${y}년 ${m}월 ${d}일`;
   $('dutyPill').textContent=selectedDuty;
-  $('dutyTime').textContent=DUTY_INFO[selectedDuty].time;
   document.querySelectorAll('.duty-buttons button').forEach(b=>b.classList.toggle('active',b.dataset.duty===selectedDuty));
   const dateRoster=getRosterForDate(selectedDate);
   const missingDay=Boolean(dateRoster && !hasRosterDay(selectedDate,dateRoster));
@@ -185,7 +113,10 @@ function render(){
   $('fileStatus').textContent=dateRoster ? (dateRoster===sampleRoster ? '샘플 데이터' : (rosterRecords.find(r=>r.year===dateRoster.year&&r.month===dateRoster.month)?.fileName || '저장된 근무표')) : '근무표 없음';
   $('sourceMeta').textContent=dateRoster ? (dateRoster===sampleRoster ? '현재 기본 데이터' : `${dateRoster.year}년 ${dateRoster.month}월 근무표`) : `${y}년 ${m}월 근무표 없음`;
   if(missingDay) $('sourceMeta').textContent+=` · ${d}일 자료 없음`;
-  $('ruleStatus').textContent='MICU 기본 규칙';
+  const activeRules=RosterModel.rulesFor(dateRoster);
+  $('dutyTime').textContent=activeRules.dutyDisplay?.[selectedDuty] || DUTY_INFO[selectedDuty].time;
+  $('ruleStatus').textContent=activeRules.label;
+  renderRuleDetails(activeRules);
   $('printMeta').textContent=`${y}년 ${m}월 ${d}일 · ${selectedDuty} · ${DUTY_INFO[selectedDuty].label}`;
   $('editModeBadge').textContent=editMode ? (editDirty?'수정 중 · 변경됨':'수정 모드') : '기본 규칙';
   $('editHint').textContent=editMode ? (editDirty?'변경사항이 있어. 저장 후 확인이 끝나면 적용돼.':'수정 모드: 각 역할의 이름을 클릭해서 직접 바꿀 수 있어.') : '';
@@ -228,8 +159,9 @@ function renderAssignments(staff,dateRoster){
   const activeAssignments=editMode?draftAssignments:manualAssignments;
   const missingDay=Boolean(dateRoster && !hasRosterDay(selectedDate,dateRoster));
   const groups=dateRoster&&!missingDay?automaticGroups(staff,dateRoster):{'통보연락반':[],'소화반':[],'대피유도반':[]};
-  const reasons={'통보연락반':'간호사 중 최선임','소화반':'간호사 중 차선임 · 3번째 선임','대피유도반':'4번째 이하 간호사 · 사원 · 의사'};
-  const classes={'통보연락반':'notification','소화반':'fire','대피유도반':'evacuation wide'};
+  const rule=RosterModel.rulesFor(dateRoster);
+  const reasons={[rule.roles.notification]:`선임 간호사 ${rule.notificationCount}명`,[rule.roles.fire]:`그다음 간호사 ${rule.fireCount}명`,[rule.roles.evacuation]:'나머지 간호사 · 사원 · 의사'};
+  const classes={[rule.roles.notification]:'notification',[rule.roles.fire]:'fire',[rule.roles.evacuation]:'evacuation wide'};
   for(const [role,people] of Object.entries(groups)){
     const names=people.map((person,index)=>{
       const atSlot=activeAssignments[`${keyBase}|${role}|${index}`];
@@ -370,7 +302,7 @@ function renderCalendar(){
     const now=new Date();
     selectedDate=new Date(now.getFullYear(),now.getMonth(),now.getDate());
     selectedDuty=getDutyFromClock(now);
-    if(selectedDuty==='N' && (now.getHours()*60+now.getMinutes())<450){
+    if(selectedDuty==='N' && (now.getHours()*60+now.getMinutes())<RosterModel.rulesFor(roster).dutyStarts.D){
       selectedDate.setDate(selectedDate.getDate()-1);
     }
     calendarCursor=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1);
@@ -420,75 +352,11 @@ function nextDay(){
   render();
 }
 
-function extractMonthYear(fileName){
-  const s=fileName.replace(/\.[^.]+$/,'');
-  let m=s.match(/(?:^|\D)(20\d{2})\D{1,4}(1[0-2]|0?[1-9])(?!\d)/);
-  if(m) return {year:Number(m[1]),month:Number(m[2])};
-  m=s.match(/(?:^|\D)(20\d{2})(0[1-9]|1[0-2])(?!\d)/);
-  if(m) return {year:Number(m[1]),month:Number(m[2])};
-  return null;
+function extractMonthYear(fileName){ return RosterParser.extractMonthYear(fileName); }
+function parseWorkbook(sheet,options){
+  return RosterParser.parseRows(XLSX.utils.sheet_to_json(sheet,{header:1,defval:''}),options);
 }
-
-function parseWorkbook(ws){
-  const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
-  const headerIndex=rows.findIndex(r=>r.some(v=>String(v).trim()==='1'));
-  if(headerIndex<0) throw new Error('날짜 행(1, 2, 3...)을 찾지 못했어.');
-
-  const header=rows[headerIndex];
-  const dayCols=[];
-  for(let c=0;c<header.length;c++){
-    const raw=header[c];
-    const n=(typeof raw==='number') ? raw : Number(String(raw).trim());
-    if(Number.isInteger(n)&&n>=1&&n<=31) dayCols.push([n,c]);
-  }
-  if(!dayCols.length) throw new Error('날짜 열을 찾지 못했어.');
-
-  // 근무표 형식이 월별로 조금 달라질 수 있으므로 이름 열을 고정하지 않는다.
-  // 날짜 첫 열보다 앞쪽에서 실제 사람 이름처럼 보이는 열을 자동 탐지한다.
-  const firstDayCol=dayCols[0][1];
-  const preDayCols=Math.max(0,firstDayCol);
-  const hangulName=/^[가-힣]{2,4}$/;
-  let nameCol=-1;
-  let bestScore=-1;
-  for(let c=0;c<preDayCols;c++){
-    let score=0;
-    for(let r=headerIndex+1;r<rows.length;r++){
-      const v=String(rows[r]?.[c]??'').trim();
-      if(!v || v==='index') continue;
-      if(hangulName.test(v)) score++;
-    }
-    if(score>bestScore){bestScore=score;nameCol=c;}
-  }
-  // 날짜가 바로 첫 열이면 이름은 통상 날짜 열의 왼쪽(0번 열)이다.
-  if(nameCol<0) nameCol=Math.max(0,firstDayCol-1);
-  if(bestScore<=0 && firstDayCol>0) nameCol=firstDayCol-1;
-
-  const dataRows=rows.slice(headerIndex+1)
-    .filter(r=>String(r?.[nameCol]??'').trim())
-    .filter(r=>String(r?.[nameCol]??'').trim()!=='index');
-
-  const all=dataRows.map(r=>({name:String(r[nameCol]??'').trim(),group:''})).filter(p=>p.name);
-  if(!all.length) throw new Error('근무표에서 인원을 찾지 못했어. 이름 열과 날짜 행을 확인해줘.');
-  const groups=[
-    {name:'Charge',people:[]},
-    {name:'중간년차',people:[]},
-    {name:'저연차',people:[]}
-  ];
-
-  all.forEach((p,i)=>{
-    p.group=i<8?'Charge':i<14?'중간년차':'저연차';
-    groups[i<8?0:i<14?1:2].people.push(p.name);
-  });
-
-  const shifts={};
-  for(const [day,c] of dayCols){
-    shifts[String(day)]=dataRows.map(r=>String(r[c]??'').trim());
-  }
-  return {all,groups,shifts,maxDay:Math.max(...dayCols.map(x=>x[0])),schemaVersion:ROSTER_SCHEMA_VERSION};
-}
-
-function rosterKey(year,month){return `${year}-${String(month).padStart(2,'0')}`}
-
+function rosterKey(year,month){ return RosterModel.rosterKey(year,month); }
 async function openDB(){
   return AppStorage.openDB();
 }
@@ -500,11 +368,11 @@ async function saveRosterRecord(record){
 async function getRosterRecords(){
   return (await AppStorage.listRosters()).sort((a,b)=>a.year-b.year||a.month-b.month);
 }
-async function deleteRosterRecord(id){
+async function deleteRosterRecord(id,expectedCurrent){
   const record=rosterRecords.find(row=>row.id===id);
   return Audit.perform(auditContext(record,'근무표 삭제','근무표 전체'),[
     {action:'roster_deleted',before:record?.fileName || id,after:'삭제',detail:'근무표와 관련 수정사항·추가 인원 삭제. 수정 이력은 유지.'}
-  ],()=>AppStorage.deleteRoster(id));
+  ],()=>AppStorage.deleteRoster(id,expectedCurrent));
 }
 
 function getRosterIdForRoster(rosterRef){
@@ -550,7 +418,7 @@ function recordToRoster(record){
   return {
     id:record.id || rosterKey(record.year,record.month),
     year:record.year,month:record.month,all:record.all,
-    groups:record.groups,shifts:record.shifts,maxDay:record.maxDay,schemaVersion:record.schemaVersion||1
+    groups:record.groups,shifts:record.shifts,maxDay:record.maxDay,schemaVersion:record.schemaVersion||1,ruleSnapshot:record.ruleSnapshot
   };
 }
 
@@ -585,10 +453,11 @@ async function renderRosterLibrary(){
     };
     item.querySelector('.delete').onclick=async()=>{
       if(!maybeLeaveEdit('근무표를 삭제')) return;
-      if(!confirm(`${record.year}년 ${record.month}월 근무표와 관련 수정사항·추가 인원을 삭제할까?`)) return;
       await runSavedAction(async()=>{
+        const expectedCurrent={record,revision:(await AppStorage.readState(record.id)).revision};
+        if(!confirm(`${record.year}년 ${record.month}월 근무표와 관련 수정사항·추가 인원을 삭제할까?`)) return false;
         const wasActive=getActiveRosterId()===record.id;
-        await deleteRosterRecord(record.id);
+        await deleteRosterRecord(record.id,expectedCurrent);
         rosterRecords=rosterRecords.filter(r=>r.id!==record.id);
         if(wasActive){
           activeRosterId=null;
@@ -611,7 +480,7 @@ function resetToSampleOrCurrent(){
   const now=new Date();
   selectedDuty=getDutyFromClock(now);
   const dutyDate=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-  if(selectedDuty==='N' && (now.getHours()*60+now.getMinutes())<450){
+  if(selectedDuty==='N' && (now.getHours()*60+now.getMinutes())<RosterModel.rulesFor(roster).dutyStarts.D){
     dutyDate.setDate(dutyDate.getDate()-1);
   }
   selectedDate=dutyDate;
@@ -644,40 +513,26 @@ async function activateRoster(record, goToFirstDay=true){
 }
 
 async function loadWorkbook(file){
-  const data=await file.arrayBuffer();
-  const wb=XLSX.read(data,{type:'array'});
-  const ws=wb.Sheets[wb.SheetNames[0]];
-  const parsed=parseWorkbook(ws);
-  const info=extractMonthYear(file.name);
-
-  if(!info){
-    const now=new Date();
-    pendingRoster=parsed;
-    pendingFileName=file.name;
-    pendingFileBlob=new Blob([data],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-    $('importYear').value=now.getFullYear();
-    $('importMonth').value=now.getMonth()+1;
-    $('monthYearPanel').classList.remove('hidden');
-    return false;
-  }
-
-  return persistImportedRoster(parsed,info.year,info.month,file.name,data);
+  await importReview.openFile(file);
+  updateStorageStatus('근무표 미리보기에서 해석 결과를 확인해줘. 아직 저장되지 않았어.');
 }
 
-async function persistImportedRoster(parsed,year,month,fileName,arrayBuffer){
+async function persistImportedRoster(parsed,year,month,fileName){
   const record={
     id:rosterKey(year,month),
     year,month,fileName,
     importedAt:new Date().toISOString(),
     all:parsed.all,groups:parsed.groups,shifts:parsed.shifts,maxDay:parsed.maxDay,schemaVersion:ROSTER_SCHEMA_VERSION,
-    // Uploaded workbook is stored only in the browser's local IndexedDB; it is never bundled into the app distribution.
-    sourceBlob:new Blob([arrayBuffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})
+    ruleSnapshot:parsed.ruleSnapshot,parserProfileId:parsed.parserProfileId,
+    parserSnapshot:parsed.parserSnapshot,sheetName:parsed.sheetName,
+    importInspection:parsed.inspection
   };
   const existing=await AppStorage.getRoster(record.id);
+  const expectedCurrent=existing?{record:existing,revision:(await AppStorage.readState(record.id)).revision}:null;
   if(existing && !confirm(`${year}년 ${month}월 근무표를 교체할까? 이 근무표의 수동 수정사항과 추가·제외 인원도 초기화돼.`)) return false;
   const events=[{action:existing?'roster_replaced':'roster_registered',before:existing?.fileName || '',after:fileName,detail:`${year}년 ${month}월 · ${parsed.all.length}명 · 날짜 열 ${Object.keys(parsed.shifts).length}개`}];
   if(existing) events.push({action:'data_reset',target:'근무표 관련 수정사항',before:'이전 배치 수정·추가/제외 인원·프로필',after:'초기화',detail:'같은 월 근무표 교체에 따른 초기화. 수정 이력은 유지.'});
-  await Audit.perform(auditContext(record,'근무표 저장','근무표 전체'),events,()=>AppStorage.saveRoster(record,Boolean(existing)));
+  await Audit.perform(auditContext(record,'근무표 저장','근무표 전체'),events,()=>AppStorage.saveRoster(record,Boolean(existing),expectedCurrent));
   const idx=rosterRecords.findIndex(r=>r.year===year&&r.month===month);
   if(idx>=0) rosterRecords[idx]=record; else rosterRecords.push(record);
 
@@ -697,22 +552,12 @@ async function persistImportedRoster(parsed,year,month,fileName,arrayBuffer){
 }
 
 async function finalizePendingImport(){
-  const year=Number($('importYear').value);
-  const month=Number($('importMonth').value);
-  if(!Number.isInteger(year)||year<2000||year>2100||!Number.isInteger(month)||month<1||month>12){
-    throw new Error('연도는 2000~2100, 월은 1~12 사이의 정수로 입력해줘.');
-  }
-  if(!pendingRoster) throw new Error('먼저 근무표 파일을 선택해줘.');
-  const saved=await persistImportedRoster(pendingRoster,year,month,pendingFileName,
-    pendingFileBlob ? await pendingFileBlob.arrayBuffer() : new ArrayBuffer(0));
-  if(saved===false) return false;
-
-  pendingRoster=null;
-  pendingFileName='';
-  pendingFileBlob=null;
-  $('monthYearPanel').classList.add('hidden');
-  $('rosterPanel').classList.add('hidden');
-  return true;
+  const year=Number($('importYear').value),month=Number($('importMonth').value);
+  RosterParser.validateMonth({shifts:{}},year,month);
+  return importReview.commit();
+}
+function saveReviewedImport(){
+  return runSavedAction(()=>finalizePendingImport(),{operation:'근무표 확인·저장',target:importReview.fileName});
 }
 
 async function init(){
@@ -729,6 +574,7 @@ async function init(){
     sourceFileName=active?.fileName||'샘플 데이터';
     await loadOverridesForRoster(roster.id);
     draftAssignments={...manualAssignments};
+    setToday(); // Use the loaded roster's clock policy, including after a full restore.
     storageReady=true;
     updateStorageStatus('이 브라우저에 저장 · v'+APP_VERSION);
   }catch(error){
@@ -740,6 +586,8 @@ async function init(){
 }
 
 async function refreshToNow(){
+  // Explicit refresh accepts the latest full-restore epoch before future writes.
+  await AppStorage.initialize();
   const records=await getRosterRecords();
   const id=await AppStorage.getActiveId();
   const active=records.find(row=>row.id===id);
@@ -778,6 +626,10 @@ async function runSavedAction(action,failureContext={operation:'변경 저장'})
     return true;
   }catch(error){
     console.error('저장 작업 오류:',error);
+    if(error.restoreCommitted){
+      updateStorageStatus(error.message,true);showToast('복원 확인이 필요해. 새로고침 후 내용을 확인해줘.');
+      return false;
+    }
     if(Audit.completedCount>completedBefore){
       updateStorageStatus(`데이터 저장은 확인했지만 화면 갱신에 실패했어. 새로고침해줘. ${error.message}`,true);
       showToast('데이터 저장 완료 · 화면을 새로고침해줘.');
@@ -835,22 +687,30 @@ function setToday(){
   const now=new Date();
   selectedDate=new Date(now.getFullYear(),now.getMonth(),now.getDate());
   selectedDuty=getDutyFromClock(now);
-  if(selectedDuty==='N' && (now.getHours()*60+now.getMinutes())<450) selectedDate.setDate(selectedDate.getDate()-1);
+  if(selectedDuty==='N' && (now.getHours()*60+now.getMinutes())<RosterModel.rulesFor(roster).dutyStarts.D) selectedDate.setDate(selectedDate.getDate()-1);
   calendarCursor=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1);
 }
 
 function hasUnsavedWork(){
   const enteringPerson=!$('personnelPanel').classList.contains('hidden') && Boolean($('personName').value.trim());
-  return (typeof Audit!=='undefined' && Audit.pendingCount>0) || editDirty || savePending || (typeof personnelDirty!=='undefined' && personnelDirty) || enteringPerson;
+  return Boolean(backupPanel?.busy) || Boolean(importReview?.isOpen) || (typeof Audit!=='undefined' && Audit.pendingCount>0) || editDirty || savePending || (typeof personnelDirty!=='undefined' && personnelDirty) || enteringPerson;
 }
-function cancelPendingImport(){
-  $('monthYearPanel').classList.add('hidden');
-  pendingRoster=null;
-  pendingFileName='';
-  pendingFileBlob=null;
-}
+function cancelPendingImport(){ importReview?.close(); }
 
 /* UI bindings */
+importReview=ImportReview.create({save:persistImportedRoster,isBusy:()=>savePending});
+backupPanel=BackupPanel.create({storage:AppStorage,audit:Audit,format:BackupFormat,appVersion:APP_VERSION,
+  canStart:()=>{
+    if(!storageReady)throw new Error('저장소를 먼저 연결해줘.');
+    if(savePending||editDirty||importReview.isOpen||(typeof personnelDirty!=='undefined'&&personnelDirty)||(!$('personnelPanel').classList.contains('hidden')&&$('personName').value.trim()))throw new Error('입력 중인 변경을 먼저 저장하거나 취소해줘.');
+  },
+  restore:(incoming,current)=>runSavedAction(async()=>{
+    await Audit.perform({operation:'전체 백업 복원',context:'이 브라우저 전체'},[{action:'backup_restored',detail:'근무표·인원·배치·이력을 백업으로 복원. 복원 전 별도 백업 보관.'}],()=>AppStorage.restoreSnapshot(incoming,current));
+    await init();
+    if(!storageReady)throw new Error('복원 후 화면 데이터를 불러오지 못했어.');
+    showToast('전체 데이터 복원을 확인했어.');
+  })
+});
 
 $('printBtn').onclick=()=>{
   const current=getRosterForDate(selectedDate);
@@ -920,7 +780,10 @@ $('importRosterBtn').onclick=()=>$('fileInput').click();
 $('fileInput').onchange=async e=>{
   const file=e.target.files[0];
   e.target.value='';
-  if(file) await runSavedAction(()=>loadWorkbook(file),{operation:'근무표 파일 읽기·저장',target:file.name});
+  if(file) {
+    try { await loadWorkbook(file); }
+    catch(error) { updateStorageStatus(`근무표를 읽지 못했어. ${error.message}`,true); await Audit.recordFailure({operation:'근무표 파일 읽기',target:file.name},error); }
+  }
 };
 
 $('dateButton').onclick=()=>{
@@ -995,10 +858,9 @@ $('closeSettings2').onclick=()=>$('settingsPanel').classList.add('hidden');
 
 $('closeMonthYear').onclick=cancelPendingImport;
 
-$('applyMonthYear').onclick=()=>{
-  runSavedAction(()=>finalizePendingImport(),{operation:'근무표 월 확인·저장',target:pendingFileName});
-};
+$('applyMonthYear').onclick=saveReviewedImport;
 
 renderCurrentClock();
 setInterval(renderCurrentClock,1000);
 init();
+
