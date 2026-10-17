@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>MICU 화재대피 인원배치</title>
-<link rel="stylesheet" href="style.css"/>
+<link rel="stylesheet" href="style.css?v=0.7.5-db4"/>
 </head>
 <body>
 <div class="app-shell">
@@ -84,7 +84,7 @@
       </button>
     </section>
 
-    <div class="storage-bar" role="status" aria-live="polite"><span id="storageStatus">저장소를 확인하고 있어.</span><button id="retryStorageBtn" type="button" hidden>저장소 다시 연결</button><button id="historyBtn" type="button">수정 이력</button></div>
+    <div class="storage-bar" role="status" aria-live="polite"><span id="storageStatus">저장소를 확인하고 있어.</span><button id="retryStorageBtn" type="button" hidden>저장소 다시 연결</button><button id="backupBtn" type="button">전체 백업 · 복원</button><button id="historyBtn" type="button">수정 이력</button></div>
     <div id="auditWarning" class="audit-warning" hidden><span id="auditStatus" role="status"></span><button id="retryAuditBtn" type="button">이력 저장 재시도</button></div>
     <section class="workspace">
       <aside class="staff-panel card">
@@ -114,13 +114,30 @@
           <button id="saveManualBtn" class="primary">수정사항 저장</button>
         </div>
         <div class="notice">
-          <strong>MICU 기본 배치 규칙</strong><br/>
+          <strong>현재 배치 규칙</strong><br/><span id="assignmentRuleSummary">
           근무자 중 <b>최선임 → 통보연락반</b>, <b>차선임·3번째 선임 → 소화반</b>,
-          <b>4번째 이하 간호사 → 대피유도반</b>으로 배치해. 인원 관리에서 추가한 사원·의사도 대피유도반에 포함돼.
+          <b>4번째 이하 간호사 → 대피유도반</b>으로 배치해. 인원 관리에서 추가한 사원·의사도 대피유도반에 포함돼.</span>
         </div>
       </section>
     </section>
   </main>
+</div>
+<div id="backupPanel" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="backupTitle">
+  <div class="settings-card history-card">
+    <div class="settings-head"><h2 id="backupTitle">전체 데이터 백업 · 복원</h2><button id="closeBackup" class="icon-btn" aria-label="백업 닫기">×</button></div>
+    <div class="history-body">
+      <p class="notice">근무표·인원 변경·수동 배치·활성 근무표·수정 이력을 하나의 파일로 보관해. 이름과 이력이 포함되며 암호화된 파일은 아니야.</p>
+      <h3>현재 데이터</h3><p id="backupCurrent" class="review-placement"></p>
+      <button id="backupExport" class="primary" type="button">전체 백업 내려받기</button>
+      <h3>백업에서 복원</h3>
+      <p>복원하면 이 브라우저의 근무표·인원 변경·수동 배치·수정 이력이 백업 내용으로 모두 바뀌어. 다른 탭은 닫고 진행해줘.</p>
+      <label class="backup-file-label">복원할 전체 백업 파일<input id="backupInput" type="file" accept=".json,application/json"></label>
+      <p id="backupIncoming" class="review-placement"></p>
+      <button id="backupPrepare" type="button" disabled>복원 전 현재 데이터 백업 내려받기</button>
+      <p id="backupMessage" role="status"></p><p id="backupError" class="review-error" role="alert"></p>
+    </div>
+    <div class="settings-actions history-actions"><label class="review-confirm"><input id="backupConfirmed" type="checkbox" disabled>복원 전 백업 파일을 저장했고, 현재 데이터 전체를 바꿀 것을 확인했어.</label><button id="backupRestore" class="primary" type="button" disabled>확인한 백업으로 전체 복원</button></div>
+  </div>
 </div>
 <div id="historyPanel" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="historyTitle">
   <div class="settings-card history-card">
@@ -196,7 +213,7 @@
       현재 확인된 MICU 화재대피 반 편성을 기본 규칙으로 적용해. 이 화면에서는 규칙을 임의로 바꾸지 않고,
       실제 병원 자료가 추가되면 다음 버전에서 규칙을 확장하는 구조로 유지해.
     </p>
-    <div class="rule-box">
+    <div class="rule-box" id="ruleDetails">
       <div><b>① 통보연락반</b><span>근무자 중 최선임 1명</span></div>
       <div><b>② 소화반</b><span>차선임 + 3번째 선임</span></div>
       <div><b>③ 대피유도반</b><span>4번째 이하 간호사 + 사원 + 의사</span></div>
@@ -227,7 +244,7 @@
 
     <div class="help-section">
       <h3>② 근무표 저장 · 사용</h3>
-      <p><b>근무표</b> 버튼에서 <b>＋ 근무표 저장</b>을 누르면 Excel을 불러와 브라우저에 저장해. 저장만 했다고 바로 현재 화면에 적용되지는 않아.</p>
+      <p><b>근무표</b> 버튼에서 <b>＋ 근무표 저장</b>을 누르면 Excel을 불러와 미리보기를 열어. 연월·시트·날짜 행·이름 열과 선임 그룹 인원을 확인하고, 원본 대조 확인란을 선택한 뒤 저장해. 저장만 했다고 바로 현재 화면에 적용되지는 않아.</p>
       <p>저장된 목록에서 <b>사용</b>을 눌러야 해당 월 근무표가 현재 적용돼. <b>사용 중</b> 표시가 현재 적용된 근무표야.</p>
       <p>여러 월의 근무표를 동시에 보관할 수 있어. 다른 월을 저장하거나 사용해도 나머지 월의 저장 데이터에는 영향을 주지 않아.</p>
       <p>같은 월의 근무표를 다시 저장하면 기존 파일을 교체할지 확인해. 교체하면 해당 근무표의 수동 수정사항과 인원 추가·제외·프로필 수정도 함께 초기화돼.</p>
@@ -281,7 +298,7 @@
       <h3>⑧ 저장 데이터의 범위</h3>
       <p>근무표와 수동 수정사항은 <b>현재 사용하는 브라우저의 로컬 저장소</b>에 보관돼. 인터넷 서버에 자동으로 전송하는 기능은 현재 없어.</p>
       <p>앱 배포 파일에는 실제 운영 근무표를 넣지 않고, 개발·테스트용 샘플 데이터만 포함하는 것을 원칙으로 해.</p>
-      <p>따라서 다른 컴퓨터나 다른 브라우저에서 사용하려면 그 환경에서 최신 근무표를 다시 업로드해야 해.</p>
+      <p>따라서 다른 컴퓨터나 다른 브라우저에서는 최신 근무표를 업로드하거나 전체 백업 파일을 복원할 수 있어. 자동 공유는 되지 않아.</p>
     </div>
 
     <div class="help-section">
@@ -305,7 +322,7 @@
       <p><b>저장한 근무표와 배치 내용은 사용한 컴퓨터의 해당 브라우저에 저장돼.</b> 인터넷에 있는 하나의 공용 저장공간에 저장하는 방식은 아니야.</p>
       <p>같은 컴퓨터에서 같은 브라우저를 계속 사용하면 브라우저를 닫았다가 다시 열어도 저장한 내용을 다시 사용할 수 있어.</p>
       <p><b>다른 컴퓨터나 다른 브라우저에서는 기존 데이터가 자동으로 보이지 않아.</b> 같은 URL을 열더라도 저장공간이 각각 따로 있기 때문이야.</p>
-      <p>컴퓨터에 문제가 생기거나 브라우저의 사이트 데이터가 삭제되면 저장한 내용이 사라질 수 있어. <b>중요한 근무표는 별도로 보관하는 것을 권장해.</b></p>
+      <p>컴퓨터에 문제가 생기거나 브라우저의 사이트 데이터가 삭제되면 저장한 내용이 사라질 수 있어. <b>전체 백업 내려받기로 근무표·인원 변경·수동 배치·이력을 함께 보관해.</b></p>
       <p>여러 사람이 여러 컴퓨터에서 <b>하나의 근무표를 함께 조회하거나 수정</b>해야 하는 경우에는 현재 버전만으로는 부족해. 나중에 별도의 서버와 데이터베이스를 연결하는 개발이 필요해.</p>
     </div>
 <div class="help-section">
@@ -316,45 +333,62 @@
       <p>이력은 운영 데이터와 별도 영역에 보관돼. 근무표 삭제·교체 후에도 남지만, 기기 간 공유되지 않고 사이트 데이터 삭제 시 함께 사라져. 이전 변경을 복구하는 백업이나 서버 감사로그는 아니야.</p>
       <p><b>이력 저장 대기</b> 알림이 보이면 실제 데이터 저장 결과와 별도로 이력 저장을 재시도해줘. 대기 이력은 현재 창에만 있으므로 창을 닫기 전에 재시도하거나 Excel로 보관해. 저장 실패는 쓰기 또는 저장 후 확인 실패를 뜻하며, 실제 데이터가 일부 저장된 경우도 있어.</p>
     </div>
+<div class="help-section">
+      <h3>⑬ 전체 데이터 백업 · 복원</h3>
+      <p><b>전체 백업 · 복원 → 전체 백업 내려받기</b>로 이 브라우저의 근무표, 인원 변경, 수동 배치, 선택 상태, 수정 이력을 JSON 파일 하나에 보관해. 앱 ZIP이나 이력 Excel과는 다른 파일이야.</p>
+      <p>복원할 JSON을 선택하면 파일 손상·형식·인원 연결 정보를 먼저 검사해. 미리보기를 확인하고 <b>복원 전 현재 데이터 백업</b>을 내려받아 보관한 다음 확인란을 선택해야 전체 복원을 실행할 수 있어.</p>
+      <p>전체 복원은 현재 데이터를 합치는 것이 아니라 <b>수정 이력까지 백업 시점으로 교체</b>해. 복원 성공 후 해당 작업을 새 이력으로 남겨. 일반 근무표 삭제·교체는 이전처럼 수정 이력을 유지해.</p>
+      <p>다른 탭을 닫고 복원하고, 사용 중이던 탭은 새로고침해. 복원 후 다시 읽기 확인에 실패했다는 안내가 나오면 복원을 반복하기 전에 새로고침해 내용을 확인해. 복원 전 백업은 계속 보관해.</p>
+      <p>백업 파일에는 이름·근무 정보가 들어 있고 암호화되지 않아. 내려받기는 브라우저 다운로드 목록에서 확인해. 파일 크기는 20MB까지 지원해.</p>
+    </div>
 <div class="settings-actions">
-      <span class="settings-fixed">MICU 화재대피 인원배치 · v0.7.2</span>
+      <span class="settings-fixed">MICU 화재대피 인원배치 · v0.7.5<span id="buildCommit"> · 커밋 미확인</span></span>
       <button id="closeHelp2" class="primary">확인</button>
     </div>
   </div>
 </div>
 
-<!-- 월/연도 확인 -->
-<div id="monthYearPanel" class="overlay hidden">
-  <div class="settings-card">
-    <div class="settings-head">
-      <div>
-        <span class="eyebrow">IMPORT</span>
-        <h2>근무표 월 확인</h2>
+<!-- Import validation: reviewed data is required before persistence. -->
+<div id="monthYearPanel" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="importTitle">
+  <div class="settings-card history-card import-card">
+    <div class="settings-head"><div><span class="eyebrow">ROSTER REVIEW</span><h2 id="importTitle">근무표 확인 후 저장</h2></div><button id="closeMonthYear" class="icon-btn" aria-label="근무표 확인 닫기">×</button></div>
+    <div class="history-body">
+      <p class="notice">기존 파일과 현재 규칙으로 읽은 결과야. 공식 양식·규칙 검증을 대신하지 않아. 원본과 비교하고 저장해줘.</p>
+      <div class="history-filters">
+        <label>연도<input id="importYear" type="number" min="2000" max="2100"></label>
+        <label>월<input id="importMonth" type="number" min="1" max="12"></label>
+        <label>시트<select id="importSheet"></select></label>
+        <label>날짜 행 (비우면 자동)<input id="importHeader" type="number" min="1" placeholder="예: 2"></label>
+        <label>이름 열 (비우면 자동)<input id="importNameColumn" type="text" placeholder="예: B" maxlength="3"></label>
       </div>
-      <button id="closeMonthYear" class="icon-btn">×</button>
+      <div id="importGroups" class="history-filters"></div>
+      <p id="importSummary" class="review-summary"></p><p id="importMapping"></p>
+      <p id="importError" class="review-error" role="alert"></p><ul id="importWarnings" class="review-warnings"></ul>
+      <div id="importPreview" class="import-preview" tabindex="0" aria-label="해석한 근무표 전체. 가로로 스크롤할 수 있습니다."></div>
+      <h3>배치 예상 결과</h3>
+      <div class="history-filters"><label>날짜<select id="importDay"></select></label><label>듀티<select id="importDuty"><option>D</option><option>E</option><option>N</option></select></label></div>
+      <p id="importPlacement" class="review-placement"></p>
     </div>
-    <p class="settings-note">
-      파일명에서 연도/월을 찾지 못했어. 이 근무표가 어느 달인지 한 번만 지정해줘.
-    </p>
-    <label>연도
-      <input id="importYear" type="number" min="2000" max="2100" value="2026"/>
-    </label>
-    <label>월
-      <input id="importMonth" type="number" min="1" max="12" value="9"/>
-    </label>
-    <div class="settings-actions">
-      <span></span>
-      <button id="applyMonthYear" class="primary">근무표 저장</button>
-    </div>
+    <div class="settings-actions history-actions"><label class="review-confirm"><input id="importAcknowledged" type="checkbox">연월·이름·날짜 열·선임 그룹·근무 코드를 원본과 대조했어.</label><button id="applyMonthYear" class="primary" disabled>확인한 근무표 저장</button></div>
   </div>
 </div>
 
-<script src="vendor/xlsx.full.min.js"></script>
-<script src="storage.js"></script>
-<script src="audit.js"></script>
-<script src="audit-model.js"></script>
-<script src="script.js"></script>
-<script src="personnel.js"></script>
-<script src="history.js"></script>
+<script src="vendor/xlsx.full.min.js?v=0.7.5-db4"></script>
+<script src="domain/config.js?v=0.7.5-db4"></script>
+<script src="domain/roster-model.js?v=0.7.5-db4"></script>
+<script src="domain/roster-parser.js?v=0.7.5-db4"></script>
+<script src="domain/change-events.js?v=0.7.5-db4"></script>
+<script src="data/sample-roster.js?v=0.7.5-db4"></script>
+<script src="ui/import-review.js?v=0.7.5-db4"></script>
+<script src="ui/backup-panel.js?v=0.7.5-db4"></script>
+<script src="domain/backup-format.js?v=0.7.5-db4"></script>
+<script src="build-info.js?v=0.7.5-db4"></script>
+<script src="storage.js?v=0.7.5-db4"></script>
+<script src="audit.js?v=0.7.5-db4"></script>
+<script src="audit-model.js?v=0.7.5-db4"></script>
+<script src="script.js?v=0.7.5-db4"></script>
+<script src="personnel.js?v=0.7.5-db4"></script>
+<script src="history.js?v=0.7.5-db4"></script>
 </body>
 </html>
+
